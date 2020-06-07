@@ -1,16 +1,25 @@
 /* Variable parameters */
 
 // count
-let particleCount = 200
+let particleCount = 300
 
 // speed
-let particleSpeed = 0.1
+let particleSpeed = 2
 
 // size
-let particleSize = 10
+let particleSize = 15
 
 // rate of color change
-let colorRate = 2.0
+let colorRate = 1.0
+
+// hue
+let hue = 0
+
+// saturation (%)
+let saturation = 100
+
+// lightness (%)
+let lightness = 50
 
 // background
 let background = 'black'
@@ -30,7 +39,6 @@ const body = document.body
 body.style.background = background
 
 const particlesArray = []
-let hue = 0
 
 body.onresize = () => {
   canvas.width = window.innerWidth
@@ -69,6 +77,20 @@ const colorRateControl = document.getElementById('color-rate')
 colorRateControl.oninput = event => {
   colorRate = Number(parseFloat(event.target.value).toPrecision(1))
   console.log({ colorRate, hue })
+  reInit()
+}
+
+const saturationControl = document.getElementById('saturation')
+
+saturationControl.oninput = event => {
+  saturation = event.target.value
+  reInit()
+}
+
+const lightnessControl = document.getElementById('lightness')
+
+lightnessControl.oninput = event => {
+  lightness = event.target.value
   reInit()
 }
 
@@ -122,7 +144,7 @@ class Particle {
   draw() {
     ctx.beginPath()
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
-    ctx.fillStyle = `hsl(${hue}, 100%, 50%)`
+    ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`
     // ctx.fillStyle = gradient
     ctx.fill()
     ctx.strokeStyle = strokeColor
@@ -154,7 +176,7 @@ function init() {
 
 function animate() {
   // ctx.clearRect(0, 0, canvas.width, canvas.height)
-  ctx.fillStyle = 'hsla(0, 0%, 100%, 0.01)'
+  ctx.fillStyle = 'hsla(0, 0%, 100%, 0.001)'
   ctx.fillRect(0, 0, canvas.width, canvas.height)
   for (let i = 0; i < particlesArray.length; i++) {
     const element = particlesArray[i]

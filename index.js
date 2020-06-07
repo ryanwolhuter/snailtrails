@@ -72,7 +72,7 @@ const particlesArray = []
 body.onresize = () => {
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
-  reInit()
+  reDraw()
 }
 
 /* Controls */
@@ -80,8 +80,9 @@ body.onresize = () => {
 const countControl = document.getElementById('count')
 
 countControl.oninput = event => {
-  particleCount = event.target.value
-  reInit()
+  const countDiff = event.target.value - particleCount
+  particleCount += countDiff
+  reDraw({ countDiff })
 }
 
 const speedControl = document.getElementById('speed')
@@ -89,35 +90,35 @@ const speedControl = document.getElementById('speed')
 speedControl.oninput = event => {
   const newSpeed = Number(parseFloat(event.target.value).toPrecision(1))
   particleSpeed = newSpeed
-  reInit()
+  reDraw()
 }
 
 const sizeControl = document.getElementById('size')
 
 sizeControl.oninput = event => {
   particleSize = event.target.value
-  reInit()
+  reDraw()
 }
 
 const colorRateControl = document.getElementById('color-rate')
 
 colorRateControl.oninput = event => {
   colorRate = Number(parseFloat(event.target.value).toPrecision(1))
-  reInit()
+  reDraw()
 }
 
 const saturationControl = document.getElementById('saturation')
 
 saturationControl.oninput = event => {
   saturation = event.target.value
-  reInit()
+  reDraw()
 }
 
 const lightnessControl = document.getElementById('lightness')
 
 lightnessControl.oninput = event => {
   lightness = event.target.value
-  reInit()
+  reDraw()
 }
 
 const backgroundLight = document.getElementById('background-light')
@@ -127,7 +128,7 @@ backgroundLight.onclick = () => {
   darkBackground = false
   matchBackground = false
   inverseBackground = false
-  reInit()
+  reDraw()
 }
 
 const backgroundDark = document.getElementById('background-dark')
@@ -137,7 +138,7 @@ backgroundDark.onclick = () => {
   darkBackground = true
   matchBackground = false
   inverseBackground = false
-  reInit()
+  reDraw()
 }
 
 const backgroundMatch = document.getElementById('background-match')
@@ -147,7 +148,7 @@ backgroundMatch.onclick = () => {
   darkBackground = false
   matchBackground = true
   inverseBackground = false
-  reInit()
+  reDraw()
 }
 const backgroundInverse = document.getElementById('background-inverse')
 
@@ -156,7 +157,7 @@ backgroundInverse.onclick = () => {
   darkBackground = false
   matchBackground = false
   inverseBackground = true
-  reInit()
+  reDraw()
 }
 
 const strokeColorLight = document.getElementById('stroke-color-light')
@@ -166,7 +167,7 @@ strokeColorLight.onclick = () => {
   darkStroke = false
   matchStroke = false
   inverseStroke = false
-  reInit()
+  reDraw()
 }
 
 const strokeColorDark = document.getElementById('stroke-color-dark')
@@ -176,7 +177,7 @@ strokeColorDark.onclick = () => {
   darkStroke = true
   matchStroke = false
   inverseStroke = false
-  reInit()
+  reDraw()
 }
 
 const strokeColorMatch = document.getElementById('stroke-color-match')
@@ -186,7 +187,7 @@ strokeColorMatch.onclick = () => {
   darkStroke = false
   matchStroke = true
   inverseStroke = false
-  reInit()
+  reDraw()
 }
 
 const strokeColorInverse = document.getElementById('stroke-color-inverse')
@@ -196,7 +197,7 @@ strokeColorInverse.onclick = () => {
   darkStroke = false
   matchStroke = false
   inverseStroke = true
-  reInit()
+  reDraw()
 }
 
 class Particle {
@@ -204,8 +205,8 @@ class Particle {
     this.x = Math.random() * canvas.width
     this.y = Math.random() * canvas.height
     this.radius = Math.random() * particleSize
-    this.speedX = Math.random() * particleSpeed
-    this.speedY = Math.random() * particleSpeed
+    this.speedX = particleSpeed
+    this.speedY = particleSpeed
   }
 
   draw() {
@@ -281,10 +282,16 @@ function animate() {
   requestAnimationFrame(animate)
 }
 
-function reInit() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-  particlesArray.length = 0
-  init()
+function reDraw({ countDiff }) {
+  // add more particles if count has been increased
+  if (countDiff > 0) {
+    for (let i = 0; i < countDiff; i++) {
+      particlesArray.push(new Particle())
+    }
+  } else {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    particlesArray.splice(0, -countDiff)
+  }
 }
 
 init()

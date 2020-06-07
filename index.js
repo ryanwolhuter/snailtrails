@@ -1,37 +1,44 @@
-/* Variable parameters */
+const state = {
+  // particle controls
+  particleCount: 30,
+  particleSpeed: 0.501,
+  particleSize: 85.001,
+  // color controls
+  colorRate: 1.0,
+  hue: 0,
+  saturation: 30,
+  lightness: 10,
+  // background
+  lightBackground: false,
+  darkBackground: false,
+  matchBackground: false,
+  inverseBackground: true,
+  // stroke
+  lightStroke: true,
+  darkStroke: false,
+  matchStroke: false,
+  inverseStroke: true,
+}
 
-// count
-let particleCount = 30
-
-// speed
-let particleSpeed = 0.501
-
-// size
-let particleSize = 85.001
-
-// rate of color change
-let colorRate = 1.0
-
-// hue
-let hue = 0
-
-// saturation (%)
-let saturation = 30
-
-// lightness (%)
-let lightness = 10
-
-// background
-let lightBackground = false
-let darkBackground = false
-let matchBackground = false
-let inverseBackground = true
-
-// stroke
-let lightStroke = true
-let darkStroke = false
-let matchStroke = false
-let inverseStroke = true
+let { // particle controls
+  particleCount,
+  particleSpeed,
+  particleSize,
+  // color controls
+  colorRate,
+  hue,
+  saturation,
+  lightness,
+  // background
+  lightBackground,
+  darkBackground,
+  matchBackground,
+  inverseBackground,
+  // stroke
+  lightStroke,
+  darkStroke,
+  matchStroke,
+  inverseStroke } = state
 
 /* Setup */
 
@@ -70,7 +77,6 @@ const countControl = document.getElementById('count')
 
 countControl.oninput = event => {
   particleCount = event.target.value
-  console.log(particleCount)
   reInit()
 }
 
@@ -79,7 +85,6 @@ const speedControl = document.getElementById('speed')
 speedControl.oninput = event => {
   const newSpeed = Number(parseFloat(event.target.value).toPrecision(1))
   particleSpeed = newSpeed
-  console.log({ newSpeed, particleSpeed })
   reInit()
 }
 

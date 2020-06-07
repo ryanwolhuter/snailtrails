@@ -43,6 +43,20 @@ canvas.height = window.innerHeight
 
 const body = document.body
 
+const controls = document.getElementById('controls')
+const closeButton = document.getElementById('close')
+const showControlsButton = document.getElementById('show-controls__button')
+
+closeButton.onclick = () => {
+  showControlsButton.style.display = 'grid'
+  controls.style.display = 'none'
+}
+
+showControlsButton.onclick = () => {
+  showControlsButton.style.display = 'none'
+  controls.style.display = 'grid'
+}
+
 const particlesArray = []
 
 body.onresize = () => {

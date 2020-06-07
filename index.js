@@ -10,7 +10,7 @@ let particleSpeed = 0.1
 let particleSize = 10
 
 // rate of color change
-let colorRate = 4
+let colorRate = 2.0
 
 // background
 let background = 'black'
@@ -85,6 +85,22 @@ const backgroundDark = document.getElementById('background-dark')
 backgroundDark.onclick = () => {
   background = 'black'
   body.style.background = background
+  reInit()
+}
+
+const strokeColorLight = document.getElementById('stroke-color-light')
+
+strokeColorLight.onclick = () => {
+  strokeColor = 'white'
+  body.style.strokeColor = strokeColor
+  reInit()
+}
+
+const strokeColorDark = document.getElementById('stroke-color-dark')
+
+strokeColorDark.onclick = () => {
+  strokeColor = 'black'
+  body.style.strokeColor = strokeColor
   reInit()
 }
 

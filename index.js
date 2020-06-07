@@ -28,7 +28,10 @@ let matchBackground = false
 let inverseBackground = false
 
 // stroke
-let strokeColor = 'white'
+let lightStroke = true
+let darkStroke = false
+let matchStroke = false
+let inverseStroke = false
 
 /* Setup */
 
@@ -138,14 +141,40 @@ backgroundInverse.onclick = () => {
 const strokeColorLight = document.getElementById('stroke-color-light')
 
 strokeColorLight.onclick = () => {
-  strokeColor = 'white'
+  lightStroke = true
+  darkStroke = false
+  matchStroke = false
+  inverseStroke = false
   reInit()
 }
 
 const strokeColorDark = document.getElementById('stroke-color-dark')
 
 strokeColorDark.onclick = () => {
-  strokeColor = 'black'
+  lightStroke = false
+  darkStroke = true
+  matchStroke = false
+  inverseStroke = false
+  reInit()
+}
+
+const strokeColorMatch = document.getElementById('stroke-color-match')
+
+strokeColorMatch.onclick = () => {
+  lightStroke = false
+  darkStroke = false
+  matchStroke = true
+  inverseStroke = false
+  reInit()
+}
+
+const strokeColorInverse = document.getElementById('stroke-color-inverse')
+
+strokeColorInverse.onclick = () => {
+  lightStroke = false
+  darkStroke = false
+  matchStroke = false
+  inverseStroke = true
   reInit()
 }
 
@@ -170,7 +199,18 @@ class Particle {
     ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`
     // ctx.fillStyle = gradient
     ctx.fill()
-    ctx.strokeStyle = strokeColor
+    if (lightStroke) {
+      ctx.strokeStyle = 'white'
+    }
+    if (darkStroke) {
+      ctx.strokeStyle = 'black'
+    }
+    if (matchStroke) {
+      ctx.strokeStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`
+    }
+    if (inverseStroke) {
+      ctx.strokeStyle = `hsl(${360 - hue}, ${100 - saturation}%, ${100 - lightness}%)`
+    }
     ctx.stroke()
   }
 

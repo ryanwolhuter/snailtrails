@@ -16,16 +16,19 @@ let colorRate = 1.0
 let hue = 0
 
 // saturation (%)
-let saturation = 100
+let saturation = 40
 
 // lightness (%)
 let lightness = 50
 
 // background
-let background = 'black'
+let lightBackground = true
+let darkBackground = false
+let matchBackground = false
+let inverseBackground = false
 
 // stroke
-let strokeColor = 'black'
+let strokeColor = 'white'
 
 /* Setup */
 
@@ -36,7 +39,6 @@ canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
 const body = document.body
-body.style.background = background
 
 const particlesArray = []
 
@@ -97,16 +99,39 @@ lightnessControl.oninput = event => {
 const backgroundLight = document.getElementById('background-light')
 
 backgroundLight.onclick = () => {
-  background = 'white'
-  body.style.background = background
+  lightBackground = true
+  darkBackground = false
+  matchBackground = false
+  inverseBackground = false
   reInit()
 }
 
 const backgroundDark = document.getElementById('background-dark')
 
 backgroundDark.onclick = () => {
-  background = 'black'
-  body.style.background = background
+  lightBackground = false
+  darkBackground = true
+  matchBackground = false
+  inverseBackground = false
+  reInit()
+}
+
+const backgroundMatch = document.getElementById('background-match')
+
+backgroundMatch.onclick = () => {
+  lightBackground = false
+  darkBackground = false
+  matchBackground = true
+  inverseBackground = false
+  reInit()
+}
+const backgroundInverse = document.getElementById('background-inverse')
+
+backgroundInverse.onclick = () => {
+  lightBackground = false
+  darkBackground = false
+  matchBackground = false
+  inverseBackground = true
   reInit()
 }
 
@@ -114,7 +139,6 @@ const strokeColorLight = document.getElementById('stroke-color-light')
 
 strokeColorLight.onclick = () => {
   strokeColor = 'white'
-  body.style.strokeColor = strokeColor
   reInit()
 }
 
@@ -122,7 +146,6 @@ const strokeColorDark = document.getElementById('stroke-color-dark')
 
 strokeColorDark.onclick = () => {
   strokeColor = 'black'
-  body.style.strokeColor = strokeColor
   reInit()
 }
 
@@ -182,7 +205,26 @@ function animate() {
     const element = particlesArray[i]
     element.update()
   }
-  hue += colorRate
+
+  let newHue = hue + colorRate
+  if (newHue >= 360) {
+    newHue = 360 - newHue
+  }
+  hue = newHue
+
+  if (lightBackground) {
+    body.style.background = 'white'
+  }
+  if (darkBackground) {
+    body.style.background = 'black'
+  }
+  if (matchBackground) {
+    body.style.background = `hsl(${hue}, ${saturation}%, ${lightness}%)`
+  }
+  if (inverseBackground) {
+    body.style.background = `hsl(${360 - hue}, ${100 - saturation}%, ${100 - lightness}%)`
+  }
+
   requestAnimationFrame(animate)
 }
 

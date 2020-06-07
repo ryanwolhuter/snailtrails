@@ -19,17 +19,22 @@
     <label for="color-rate">Rate of Color Change</label>
     <input type="range" name="color-rate" id="color-rate" min="0.1" max="10.0" step="0.1">
     <label for="saturation">Color Saturation (%)</label>
-    <input type="range" name="saturation" id="saturation" min="1" max="100"><label for="lightness">Color Lightness (%)</label>
+    <input type="range" name="saturation" id="saturation" min="1" max="100"><label for="lightness">Color Lightness
+      (%)</label>
     <input type="range" name="lightness" id="lightness" min="1" max="100">
     <label for="background">Background</label>
     <div class="buttons">
       <button id="background-light">light</button>
       <button id="background-dark">dark</button>
+      <button id="background-match">match</button>
+      <button id="background-inverse">inverse</button>
     </div>
     <label for="stroke-color">Stroke Color</label>
     <div class="buttons">
       <button id="stroke-color-light">light</button>
       <button id="stroke-color-dark">dark</button>
+      <button id="background-match">match</button>
+      <button id="background-inverse">inverse</button>
     </div>
   </div>
   <canvas id="canvas"></canvas>

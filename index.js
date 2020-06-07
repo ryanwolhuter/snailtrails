@@ -1,13 +1,57 @@
+/* Variable parameters */
+
+// count
 let particleCount = 200
-let particleSpeed = 4
-let particleSize = 2
-let hueSpeed = 4
+
+// speed
+let particleSpeed = 0.1
+
+// size
+let particleSize = 10
+
+// rate of color change
+let colorRate = 4
+
 let hue = 0
 let background = 'black'
 let strokeColor = 'black'
 
 const body = document.body
 body.style.background = background
+
+/* Controls */
+
+const countControl = document.getElementById('count')
+
+countControl.oninput = event => {
+  particleCount = event.target.value
+  console.log(particleCount)
+  reInit()
+}
+
+const speedControl = document.getElementById('speed')
+
+speedControl.oninput = event => {
+  const newSpeed = Number(parseFloat(event.target.value).toPrecision(1))
+  particleSpeed = newSpeed
+  console.log({ newSpeed, particleSpeed })
+  reInit()
+}
+
+const sizeControl = document.getElementById('size')
+
+sizeControl.oninput = event => {
+  particleSize = event.target.value
+  reInit()
+}
+
+const colorRateControl = document.getElementById('color-rate')
+
+colorRateControl.oninput = event => {
+  colorRate = Number(parseFloat(event.target.value).toPrecision(1))
+  console.log({ colorRate, hue })
+  reInit()
+}
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
@@ -27,9 +71,9 @@ class Particle {
   constructor() {
     this.x =  Math.random() * canvas.width
     this.y = Math.random() * canvas.height
-    this.radius = (Math.random() * 10) + particleSize
-    this.speedX = (Math.random() * 3) - particleSpeed
-    this.speedY = (Math.random() * 3) - particleSpeed
+    this.radius = (Math.random() * particleSize)
+    this.speedX = (Math.random()) - particleSpeed
+    this.speedY = (Math.random()) - particleSpeed
   }
 
   draw() {
@@ -73,8 +117,13 @@ function animate() {
     const element = particlesArray[i]
     element.update()
   }
-  hue += hueSpeed
+  hue += colorRate
   requestAnimationFrame(animate)
+}
+
+function reInit() {
+  particlesArray.length = 0
+  init()
 }
 
 init()

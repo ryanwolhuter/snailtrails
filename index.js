@@ -45,7 +45,7 @@ const body = document.body
 
 const controls = document.getElementById('controls')
 const closeButton = document.getElementById('close')
-const showControlsButton = document.getElementById('show-controls__button')
+const showControlsButton = document.getElementById('show-controls')
 
 closeButton.onclick = () => {
   showControlsButton.style.display = 'grid'

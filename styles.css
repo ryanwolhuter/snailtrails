@@ -14,7 +14,7 @@ canvas {
   display: grid;
   position: absolute;
   background: hsla(0, 0%, 40%, 0.4);
- backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   color: white;
   left: 0;
   top: 0;
@@ -34,7 +34,7 @@ button#close {
   cursor: pointer;
 }
 
-.show-controls {
+#show-controls {
   display: grid;
   position: absolute;
   background: hsla(0, 0%, 40%, 0.4);
@@ -49,6 +49,6 @@ button#close {
   cursor: pointer;
 }
 
-#show-controls__button:hover {
+#show-controls:hover {
   text-decoration: underline;
 }

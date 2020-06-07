@@ -44,9 +44,13 @@ let { // particle controls
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
+ctx.scale(2, 2)
 
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
+canvas.width = window.innerWidth * 2
+canvas.style.width = window.innerWidth
+
+canvas.height = window.innerHeight * 2
+canvas.style.height = window.innerHeight
 
 const body = document.body
 const controls = document.getElementById('controls')
@@ -99,7 +103,6 @@ const colorRateControl = document.getElementById('color-rate')
 
 colorRateControl.oninput = event => {
   colorRate = Number(parseFloat(event.target.value).toPrecision(1))
-  console.log({ colorRate, hue })
   reInit()
 }
 

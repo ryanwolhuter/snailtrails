@@ -1,26 +1,3 @@
-/* Setup */
-
-const canvas = document.getElementById('canvas')
-const ctx = canvas.getContext('2d')
-
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
-
-let background = 'black'
-let strokeColor = 'black'
-
-const body = document.body
-body.style.background = background
-
-const particlesArray = []
-let hue = 0
-
-body.onresize = () => {
-  canvas.width = window.innerWidth
-  canvas.height = window.innerHeight
-  reInit()
-}
-
 /* Variable parameters */
 
 // count
@@ -34,6 +11,32 @@ let particleSize = 10
 
 // rate of color change
 let colorRate = 4
+
+// background
+let background = 'black'
+
+// stroke
+let strokeColor = 'black'
+
+/* Setup */
+
+const canvas = document.getElementById('canvas')
+const ctx = canvas.getContext('2d')
+
+canvas.width = window.innerWidth
+canvas.height = window.innerHeight
+
+const body = document.body
+body.style.background = background
+
+const particlesArray = []
+let hue = 0
+
+body.onresize = () => {
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+  reInit()
+}
 
 /* Controls */
 
@@ -66,6 +69,22 @@ const colorRateControl = document.getElementById('color-rate')
 colorRateControl.oninput = event => {
   colorRate = Number(parseFloat(event.target.value).toPrecision(1))
   console.log({ colorRate, hue })
+  reInit()
+}
+
+const backgroundLight = document.getElementById('background-light')
+
+backgroundLight.onclick = () => {
+  background = 'white'
+  body.style.background = background
+  reInit()
+}
+
+const backgroundDark = document.getElementById('background-dark')
+
+backgroundDark.onclick = () => {
+  background = 'black'
+  body.style.background = background
   reInit()
 }
 
@@ -119,7 +138,7 @@ function init() {
 
 function animate() {
   // ctx.clearRect(0, 0, canvas.width, canvas.height)
-  ctx.fillStyle = 'hsla(0, 100%, 50%, 0.01)'
+  ctx.fillStyle = 'hsla(0, 0%, 100%, 0.01)'
   ctx.fillRect(0, 0, canvas.width, canvas.height)
   for (let i = 0; i < particlesArray.length; i++) {
     const element = particlesArray[i]
@@ -130,6 +149,7 @@ function animate() {
 }
 
 function reInit() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
   particlesArray.length = 0
   init()
 }

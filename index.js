@@ -1,3 +1,26 @@
+/* Setup */
+
+const canvas = document.getElementById('canvas')
+const ctx = canvas.getContext('2d')
+
+canvas.width = window.innerWidth
+canvas.height = window.innerHeight
+
+let background = 'black'
+let strokeColor = 'black'
+
+const body = document.body
+body.style.background = background
+
+const particlesArray = []
+let hue = 0
+
+body.onresize = () => {
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+  reInit()
+}
+
 /* Variable parameters */
 
 // count
@@ -11,13 +34,6 @@ let particleSize = 10
 
 // rate of color change
 let colorRate = 4
-
-let hue = 0
-let background = 'black'
-let strokeColor = 'black'
-
-const body = document.body
-body.style.background = background
 
 /* Controls */
 
@@ -53,14 +69,6 @@ colorRateControl.oninput = event => {
   reInit()
 }
 
-const canvas = document.getElementById('canvas')
-const ctx = canvas.getContext('2d')
-
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
-
-const particlesArray = []
-
 // const gradient = ctx.createLinearGradient(0,0,canvas.width,0)
 // gradient.addColorStop('0.2', 'red')
 // gradient.addColorStop('0.4', 'blue')
@@ -69,7 +77,7 @@ const particlesArray = []
 
 class Particle {
   constructor() {
-    this.x =  Math.random() * canvas.width
+    this.x = Math.random() * canvas.width
     this.y = Math.random() * canvas.height
     this.radius = (Math.random() * particleSize)
     this.speedX = (Math.random()) - particleSpeed
@@ -90,7 +98,7 @@ class Particle {
     this.x += this.speedX
     this.y += this.speedY
 
-    if (this.x + this.radius > canvas.width 
+    if (this.x + this.radius > canvas.width
       || this.x - this.radius < 0) {
       this.speedX = -this.speedX
     }

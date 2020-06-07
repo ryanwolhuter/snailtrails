@@ -1,13 +1,13 @@
 /* Variable parameters */
 
 // count
-let particleCount = 300
+let particleCount = 30
 
 // speed
-let particleSpeed = 2
+let particleSpeed = 0.501
 
 // size
-let particleSize = 15
+let particleSize = 85.001
 
 // rate of color change
 let colorRate = 1.0
@@ -16,22 +16,22 @@ let colorRate = 1.0
 let hue = 0
 
 // saturation (%)
-let saturation = 40
+let saturation = 30
 
 // lightness (%)
-let lightness = 50
+let lightness = 10
 
 // background
-let lightBackground = true
+let lightBackground = false
 let darkBackground = false
 let matchBackground = false
-let inverseBackground = false
+let inverseBackground = true
 
 // stroke
 let lightStroke = true
 let darkStroke = false
 let matchStroke = false
-let inverseStroke = false
+let inverseStroke = true
 
 /* Setup */
 
@@ -42,7 +42,6 @@ canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
 const body = document.body
-
 const controls = document.getElementById('controls')
 const closeButton = document.getElementById('close')
 const showControlsButton = document.getElementById('show-controls')
@@ -192,26 +191,19 @@ strokeColorInverse.onclick = () => {
   reInit()
 }
 
-// const gradient = ctx.createLinearGradient(0,0,canvas.width,0)
-// gradient.addColorStop('0.2', 'red')
-// gradient.addColorStop('0.4', 'blue')
-// gradient.addColorStop('0.6', 'yellow')
-// gradient.addColorStop('0.8', 'pink')
-
 class Particle {
   constructor() {
     this.x = Math.random() * canvas.width
     this.y = Math.random() * canvas.height
-    this.radius = (Math.random() * particleSize)
-    this.speedX = (Math.random()) - particleSpeed
-    this.speedY = (Math.random()) - particleSpeed
+    this.radius = Math.random() * particleSize
+    this.speedX = Math.random() * particleSpeed
+    this.speedY = Math.random() * particleSpeed
   }
 
   draw() {
     ctx.beginPath()
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
     ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`
-    // ctx.fillStyle = gradient
     ctx.fill()
     if (lightStroke) {
       ctx.strokeStyle = 'white'
@@ -252,7 +244,6 @@ function init() {
 }
 
 function animate() {
-  // ctx.clearRect(0, 0, canvas.width, canvas.height)
   ctx.fillStyle = 'hsla(0, 0%, 100%, 0.001)'
   ctx.fillRect(0, 0, canvas.width, canvas.height)
   for (let i = 0; i < particlesArray.length; i++) {

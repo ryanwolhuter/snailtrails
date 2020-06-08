@@ -135,8 +135,7 @@ sizeControl.oninput = handleSizeControl
 const colorRateControl = document.getElementById('color-rate')
 
 colorRateControl.oninput = event => {
-  colorRate = Number(parseFloat(event.target.value).toPrecision(1))
-  reInit()
+  colorRate = Number(event.target.value)
 }
 
 const saturationControl = document.getElementById('saturation')

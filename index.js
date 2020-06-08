@@ -2,7 +2,7 @@ const state = {
   // particle controls
   particlesArray: [],
   particleCount: 30,
-  particleSpeed: 0.501,
+  particleSpeed: 1,
   particleSize: 85.001,
   // color controls
   colorRate: 1.0,
@@ -86,17 +86,17 @@ countControl.oninput = event => {
 
 
 function handleSpeedControl(event) {
-  const newSpeed = Number(parseFloat(event.target.value).toPrecision(10))
-  if (newSpeed === particleSpeed) return
+  const newSpeed = Number(event.target.value)
   let deltaSpeed = particleSpeed - newSpeed
+  console.log({ deltaSpeed, particleSpeed, newSpeed})
   particleSpeed = newSpeed
-  updateParticleSpeeds(particlesArray, deltaSpeed)
+  updateParticleSpeeds(particlesArray)
 }
 
-function updateParticleSpeeds(particles, deltaSpeed) {
+function updateParticleSpeeds(particles) {
   particles.forEach(particle => {
-    particle.speedX += deltaSpeed
-    particle.speedY += deltaSpeed
+    particle.speedX = particleSpeed
+    particle.speedY = particleSpeed
     particle.update()
   })
 }

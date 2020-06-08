@@ -142,14 +142,12 @@ const saturationControl = document.getElementById('saturation')
 
 saturationControl.oninput = event => {
   saturation = event.target.value
-  reInit()
 }
 
 const lightnessControl = document.getElementById('lightness')
 
 lightnessControl.oninput = event => {
   lightness = event.target.value
-  reInit()
 }
 
 const backgroundLight = document.getElementById('background-light')

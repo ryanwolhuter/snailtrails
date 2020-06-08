@@ -1,5 +1,6 @@
 const state = {
   // particle controls
+  particlesArray: [],
   particleCount: 30,
   particleSpeed: 0.501,
   particleSize: 85.001,
@@ -21,6 +22,7 @@ const state = {
 }
 
 let { // particle controls
+  particlesArray,
   particleCount,
   particleSpeed,
   particleSize,
@@ -67,8 +69,6 @@ showControlsButton.onclick = () => {
   controls.style.display = 'grid'
 }
 
-const particlesArray = []
-
 body.onresize = () => {
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
@@ -84,13 +84,25 @@ countControl.oninput = event => {
   reInit()
 }
 
-const speedControl = document.getElementById('speed')
 
-speedControl.oninput = event => {
-  const newSpeed = Number(parseFloat(event.target.value).toPrecision(1))
+function handleSpeedControl(event) {
+  const newSpeed = Number(parseFloat(event.target.value).toPrecision(10))
+  if (newSpeed === particleSpeed) return
+  let deltaSpeed = particleSpeed - newSpeed
   particleSpeed = newSpeed
-  reInit()
+  updateParticleSpeeds(particlesArray, deltaSpeed)
 }
+
+function updateParticleSpeeds(particles, deltaSpeed) {
+  particles.forEach(particle => {
+    particle.speedX += deltaSpeed
+    particle.speedY += deltaSpeed
+    particle.update()
+  })
+}
+
+const speedControl = document.getElementById('speed')
+speedControl.oninput = handleSpeedControl
 
 const sizeControl = document.getElementById('size')
 
@@ -243,10 +255,6 @@ class Particle {
       this.speedY = -this.speedY
     }
     this.draw()
-  }
-
-  recalculate({ deltaSpeed }) {
-    
   }
 }
 

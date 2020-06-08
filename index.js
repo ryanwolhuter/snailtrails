@@ -115,12 +115,22 @@ function updateParticleSpeeds(particles) {
 const speedControl = document.getElementById('speed')
 speedControl.oninput = handleSpeedControl
 
-const sizeControl = document.getElementById('size')
 
-sizeControl.oninput = event => {
-  particleSize = event.target.value
-  reInit()
+function handleSizeControl(event) {
+  const newSize = Number(event.target.value)
+  particleSize = newSize
+  updateParticleSizes(particlesArray)
 }
+
+function updateParticleSizes(particles) {
+  particles.forEach(particle => {
+    particle.radius = Math.random() * particleSize
+    particle.update()
+  })
+}
+
+const sizeControl = document.getElementById('size')
+sizeControl.oninput = handleSizeControl
 
 const colorRateControl = document.getElementById('color-rate')
 

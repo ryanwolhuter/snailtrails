@@ -157,7 +157,6 @@ backgroundLight.onclick = () => {
   darkBackground = false
   matchBackground = false
   inverseBackground = false
-  reInit()
 }
 
 const backgroundDark = document.getElementById('background-dark')
@@ -167,7 +166,6 @@ backgroundDark.onclick = () => {
   darkBackground = true
   matchBackground = false
   inverseBackground = false
-  reInit()
 }
 
 const backgroundMatch = document.getElementById('background-match')
@@ -177,7 +175,6 @@ backgroundMatch.onclick = () => {
   darkBackground = false
   matchBackground = true
   inverseBackground = false
-  reInit()
 }
 const backgroundInverse = document.getElementById('background-inverse')
 
@@ -186,7 +183,6 @@ backgroundInverse.onclick = () => {
   darkBackground = false
   matchBackground = false
   inverseBackground = true
-  reInit()
 }
 
 const strokeColorLight = document.getElementById('stroke-color-light')
@@ -196,7 +192,6 @@ strokeColorLight.onclick = () => {
   darkStroke = false
   matchStroke = false
   inverseStroke = false
-  reInit()
 }
 
 const strokeColorDark = document.getElementById('stroke-color-dark')
@@ -206,7 +201,6 @@ strokeColorDark.onclick = () => {
   darkStroke = true
   matchStroke = false
   inverseStroke = false
-  reInit()
 }
 
 const strokeColorMatch = document.getElementById('stroke-color-match')
@@ -216,7 +210,6 @@ strokeColorMatch.onclick = () => {
   darkStroke = false
   matchStroke = true
   inverseStroke = false
-  reInit()
 }
 
 const strokeColorInverse = document.getElementById('stroke-color-inverse')
@@ -226,6 +219,10 @@ strokeColorInverse.onclick = () => {
   darkStroke = false
   matchStroke = false
   inverseStroke = true
+}
+
+const reset = document.getElementById('reset')
+reset.onclick = () => {
   reInit()
 }
 

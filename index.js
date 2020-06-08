@@ -77,18 +77,29 @@ body.onresize = () => {
 
 /* Controls */
 
-const countControl = document.getElementById('count')
+function handleCountControl(event) {
+  const newCount = Number(event.target.value)
 
-countControl.oninput = event => {
-  particleCount = event.target.value
-  reInit()
+  if (newCount > particleCount) {
+    particlesArray.push(new Particle())
+  }
+
+  if (newCount < particleCount) {
+    particlesArray.splice(0, particleCount - newCount)
+  }
+
+  particleCount = newCount
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
 }
 
+const countControl = document.getElementById('count')
+countControl.oninput = handleCountControl
+
+/* SPEED */
 
 function handleSpeedControl(event) {
   const newSpeed = Number(event.target.value)
-  let deltaSpeed = particleSpeed - newSpeed
-  console.log({ deltaSpeed, particleSpeed, newSpeed})
   particleSpeed = newSpeed
   updateParticleSpeeds(particlesArray)
 }

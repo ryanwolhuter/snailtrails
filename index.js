@@ -229,6 +229,7 @@ class Particle {
   }
 
   update() {
+
     this.x += this.speedX
     this.y += this.speedY
 
@@ -242,6 +243,10 @@ class Particle {
       this.speedY = -this.speedY
     }
     this.draw()
+  }
+
+  recalculate({ deltaSpeed }) {
+    
   }
 }
 

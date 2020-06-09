@@ -72,7 +72,6 @@ showControlsButton.onclick = () => {
 body.onresize = () => {
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
-  reInit()
 }
 
 /* Controls */

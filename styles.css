@@ -33,6 +33,7 @@ canvas {
   z-index: 2;
   border-radius: 1rem;
   display: none;
+  max-height: 100vh;
 }
 
 button.active {

@@ -1,21 +1,45 @@
+/* 
+ * All the application state lives inside this object.
+ *
+ * `console.log(state)` for a snapshot of the whole state.
+ *
+ * All the values are destructured into variables with the same names below.
+*/
+
 const state = {
-  // particle controls
+
+  /* Particles */
+
   particlesArray: [],
   particleCount: 30,
   particleSpeed: 1,
   particleSize: 85,
-  // color controls
-  colorRate: 1,
+
+  /* Colors
+   *
+   * The colors in the app are controlled with hsl values.
+   * The the particles shift in hue with each animation frame. 
+   * The saturation and lightness remain unchanged - unless the user modifies them.
+   *
+   * The `colorRate` is added to `hue` on each frame, until the value of `hue` reaches 360 and is reset to zero.
+   * 
+   * The colors of the canvas stroke and the background can be either white, black, the same as the particles', or the inverse of the particles'.
+  */
+
   hue: 0,
   saturation: 30,
   lightness: 10,
-  // background (one of light, dark, match, inverse)
-  background: 'inverse',
-  // stroke
-  stroke: 'inverse'
+  colorRate: 1,
+  // stroke color (one of 'light', 'dark', 'match', 'inverse')
+  stroke: 'inverse',
+  // background color (one of 'light', 'dark', 'match', 'inverse')
+  background: 'inverse'
 }
 
-let { // particle controls
+/* Destructure the values from state for convenient access */
+
+let {
+  // particle controls
   particlesArray,
   particleCount,
   particleSpeed,
@@ -25,16 +49,48 @@ let { // particle controls
   hue,
   saturation,
   lightness,
-  // background
   background,
-  // stroke
   stroke } = state
 
 /* Setup */
 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
+
+const canvasbg = document.getElementById('canvasbg')
+const ctxbg = canvasbg.getContext('2d')
+
+const controls = document.getElementById('controls')
+const closeButton = document.getElementById('close')
+const showControlsButton = document.getElementById('show-controls')
+
+const countControl = document.getElementById('count')
+countControl.oninput = handleCountControl
+const speedControl = document.getElementById('speed')
+speedControl.oninput = handleSpeedControl
+const sizeControl = document.getElementById('size')
+sizeControl.oninput = handleSizeControl
+const colorRateControl = document.getElementById('color-rate')
+const saturationControl = document.getElementById('saturation')
+const lightnessControl = document.getElementById('lightness')
+const backgroundLight = document.getElementById('background-light')
+const backgroundDark = document.getElementById('background-dark')
+const backgroundMatch = document.getElementById('background-match')
+const backgroundInverse = document.getElementById('background-inverse')
+const strokeColorLight = document.getElementById('stroke-color-light')
+const strokeColorDark = document.getElementById('stroke-color-dark')
+const strokeColorMatch = document.getElementById('stroke-color-match')
+const strokeColorInverse = document.getElementById('stroke-color-inverse')
+const reset = document.getElementById('reset')
+
+const backgroundButtons = [backgroundLight, backgroundDark, backgroundMatch, backgroundInverse]
+
+const strokeButtons = [strokeColorLight, strokeColorDark, strokeColorMatch, strokeColorInverse]
+
+/* Scale foreground and background canvases to look better on retina */
+
 ctx.scale(2, 2)
+ctxbg.scale(2, 2)
 
 canvas.width = window.innerWidth * 2
 canvas.style.width = window.innerWidth
@@ -42,28 +98,15 @@ canvas.style.width = window.innerWidth
 canvas.height = window.innerHeight * 2
 canvas.style.height = window.innerHeight
 
-const canvasbg = document.getElementById('canvasbg')
-const ctxbg = canvasbg.getContext('2d')
-ctxbg.scale(2, 2)
-
 canvasbg.width = window.innerWidth * 2
 canvasbg.style.width = window.innerWidth
 
 canvasbg.height = window.innerHeight * 2
 canvasbg.style.height = window.innerHeight
 
-const controls = document.getElementById('controls')
-const closeButton = document.getElementById('close')
-const showControlsButton = document.getElementById('show-controls')
-
-closeButton.onclick = () => {
-  showControlsButton.style.display = 'grid'
-  controls.style.display = 'none'
-}
-
-showControlsButton.onclick = () => {
-  showControlsButton.style.display = 'none'
-  controls.style.display = 'grid'
+window.onload = () => {
+  init()
+  animate()
 }
 
 window.onresize = () => {
@@ -80,7 +123,17 @@ window.onresize = () => {
   canvasbg.style.height = window.innerHeight
 }
 
-/* Controls */
+closeButton.onclick = () => {
+  showControlsButton.style.display = 'grid'
+  controls.style.display = 'none'
+}
+
+showControlsButton.onclick = () => {
+  showControlsButton.style.display = 'none'
+  controls.style.display = 'grid'
+}
+
+/* Event handlers */
 
 function handleCountControl(event) {
   const newCount = Number(event.target.value)
@@ -96,11 +149,6 @@ function handleCountControl(event) {
 
   particleCount = newCount
 }
-
-const countControl = document.getElementById('count')
-countControl.oninput = handleCountControl
-
-/* SPEED */
 
 function handleSpeedControl(event) {
   const newSpeed = Number(event.target.value)
@@ -118,10 +166,6 @@ function updateParticleSpeeds(particles) {
   })
 }
 
-const speedControl = document.getElementById('speed')
-speedControl.oninput = handleSpeedControl
-
-
 function handleSizeControl(event) {
   const newSize = Number(event.target.value)
   particleSize = newSize
@@ -135,33 +179,17 @@ function updateParticleSizes(particles) {
   })
 }
 
-const sizeControl = document.getElementById('size')
-sizeControl.oninput = handleSizeControl
-
-const colorRateControl = document.getElementById('color-rate')
-
 colorRateControl.oninput = event => {
   colorRate = Number(event.target.value)
 }
-
-const saturationControl = document.getElementById('saturation')
 
 saturationControl.oninput = event => {
   saturation = event.target.value
 }
 
-const lightnessControl = document.getElementById('lightness')
-
 lightnessControl.oninput = event => {
   lightness = event.target.value
 }
-
-const backgroundLight = document.getElementById('background-light')
-const backgroundDark = document.getElementById('background-dark')
-const backgroundMatch = document.getElementById('background-match')
-const backgroundInverse = document.getElementById('background-inverse')
-
-const backgroundButtons = [backgroundLight, backgroundDark, backgroundMatch, backgroundInverse]
 
 backgroundLight.onclick = () => {
   background = 'light'
@@ -195,13 +223,6 @@ backgroundInverse.onclick = () => {
   backgroundInverse.classList.add('active')
 }
 
-const strokeColorLight = document.getElementById('stroke-color-light')
-const strokeColorDark = document.getElementById('stroke-color-dark')
-const strokeColorMatch = document.getElementById('stroke-color-match')
-const strokeColorInverse = document.getElementById('stroke-color-inverse')
-
-const strokeButtons = [strokeColorLight, strokeColorDark, strokeColorMatch, strokeColorInverse]
-
 strokeColorLight.onclick = () => {
   stroke = 'light'
   strokeButtons.forEach(button => {
@@ -234,10 +255,10 @@ strokeColorInverse.onclick = () => {
   strokeColorInverse.classList.add('active')
 }
 
-const reset = document.getElementById('reset')
 reset.onclick = () => {
   reInit()
 }
+
 
 class Particle {
   constructor() {
@@ -253,6 +274,7 @@ class Particle {
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
     ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`
     ctx.fill()
+
     if (stroke === 'light') {
       ctx.strokeStyle = 'white'
     }
@@ -265,11 +287,11 @@ class Particle {
     if (stroke === 'inverse') {
       ctx.strokeStyle = `hsl(${360 - hue}, ${100 - saturation}%, ${100 - lightness}%)`
     }
+
     ctx.stroke()
   }
 
   update() {
-
     this.x += this.speedX
     this.y += this.speedY
 
@@ -298,11 +320,10 @@ function animate() {
     element.update()
   }
 
-  let newHue = hue + colorRate
-  if (newHue >= 360) {
-    newHue = 360 - newHue
+  if (hue >= 360) {
+    hue = 0
   }
-  hue = newHue
+  hue += colorRate
 
   if (background === 'light') {
     ctxbg.fillStyle = 'white'
@@ -327,6 +348,3 @@ function reInit() {
   particlesArray.length = 0
   init()
 }
-
-init()
-animate()

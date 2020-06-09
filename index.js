@@ -54,7 +54,7 @@ let {
 
 function randomize() {
   particleSize = Math.random() * 100
-  particleSpeed = Math.random() * 50
+  particleSpeed = (Math.random() * 100) / (Math.random() * 100)
 
   particlesArray.forEach(particle => {
     particle.x = Math.random() * canvas.width
@@ -70,7 +70,7 @@ function randomize() {
   hue = Math.ceil(Math.random() * 360)
   saturation = Math.ceil(Math.random() * 80)
   lightness = Math.ceil(Math.random() * 100)
-  colorRate = Math.ceil(Math.random() * 5)
+  colorRate = (Math.random() * 100) / (Math.random() * 100)
 }
 
 /* Setup */

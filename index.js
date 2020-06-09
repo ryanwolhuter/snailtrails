@@ -42,7 +42,16 @@ canvas.style.width = window.innerWidth
 canvas.height = window.innerHeight * 2
 canvas.style.height = window.innerHeight
 
-const body = document.body
+const canvasbg = document.getElementById('canvasbg')
+const ctxbg = canvasbg.getContext('2d')
+ctxbg.scale(2, 2)
+
+canvasbg.width = window.innerWidth * 2
+canvasbg.style.width = window.innerWidth
+
+canvasbg.height = window.innerHeight * 2
+canvasbg.style.height = window.innerHeight
+
 const controls = document.getElementById('controls')
 const closeButton = document.getElementById('close')
 const showControlsButton = document.getElementById('show-controls')
@@ -57,12 +66,18 @@ showControlsButton.onclick = () => {
   controls.style.display = 'grid'
 }
 
-body.onresize = () => {
+window.onresize = () => {
   canvas.width = window.innerWidth * 2
   canvas.style.width = window.innerWidth
 
   canvas.height = window.innerHeight * 2
   canvas.style.height = window.innerHeight
+
+  canvasbg.width = window.innerWidth * 2
+  canvasbg.style.width = window.innerWidth
+
+  canvasbg.height = window.innerHeight * 2
+  canvasbg.style.height = window.innerHeight
 }
 
 /* Controls */
@@ -80,7 +95,6 @@ function handleCountControl(event) {
   }
 
   particleCount = newCount
-
 }
 
 const countControl = document.getElementById('count')
@@ -277,8 +291,6 @@ function init() {
 }
 
 function animate() {
-  ctx.fillStyle = 'hsla(0, 0%, 100%, 0.001)'
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
   for (let i = 0; i < particlesArray.length; i++) {
     const element = particlesArray[i]
     element.update()
@@ -291,17 +303,19 @@ function animate() {
   hue = newHue
 
   if (background === 'light') {
-    body.style.background = 'white'
+    ctxbg.fillStyle = 'white'
   }
   if (background === 'dark') {
-    body.style.background = 'black'
+    ctxbg.fillStyle = 'black'
   }
   if (background === 'match') {
-    body.style.background = `hsl(${hue}, ${saturation}%, ${lightness}%)`
+    ctxbg.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`
   }
   if (background === 'inverse') {
-    body.style.background = `hsl(${360 - hue}, ${100 - saturation}%, ${100 - lightness}%)`
+    ctxbg.fillStyle = `hsl(${360 - hue}, ${100 - saturation}%, ${100 - lightness}%)`
   }
+
+  ctxbg.fillRect(0, 0, canvas.width, canvas.height)
 
   requestAnimationFrame(animate)
 }

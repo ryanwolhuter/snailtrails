@@ -3,7 +3,7 @@ const state = {
   particlesArray: [],
   particleCount: 30,
   particleSpeed: 1,
-  particleSize: 85.001,
+  particleSize: 85,
   // color controls
   colorRate: 1.0,
   hue: 0,
@@ -70,8 +70,11 @@ showControlsButton.onclick = () => {
 }
 
 body.onresize = () => {
-  canvas.width = window.innerWidth
-  canvas.height = window.innerHeight
+  canvas.width = window.innerWidth * 2
+  canvas.style.width = window.innerWidth
+
+  canvas.height = window.innerHeight * 2
+  canvas.style.height = window.innerHeight
 }
 
 /* Controls */

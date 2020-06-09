@@ -12,10 +12,7 @@ const state = {
   // background (one of light, dark, match, inverse)
   background: 'inverse',
   // stroke
-  lightStroke: true,
-  darkStroke: false,
-  matchStroke: false,
-  inverseStroke: true,
+  stroke: 'inverse'
 }
 
 let { // particle controls
@@ -31,10 +28,7 @@ let { // particle controls
   // background
   background,
   // stroke
-  lightStroke,
-  darkStroke,
-  matchStroke,
-  inverseStroke } = state
+  stroke } = state
 
 /* Setup */
 
@@ -186,39 +180,42 @@ backgroundInverse.onclick = () => {
 }
 
 const strokeColorLight = document.getElementById('stroke-color-light')
-
-strokeColorLight.onclick = () => {
-  lightStroke = true
-  darkStroke = false
-  matchStroke = false
-  inverseStroke = false
-}
-
 const strokeColorDark = document.getElementById('stroke-color-dark')
-
-strokeColorDark.onclick = () => {
-  lightStroke = false
-  darkStroke = true
-  matchStroke = false
-  inverseStroke = false
-}
-
 const strokeColorMatch = document.getElementById('stroke-color-match')
-
-strokeColorMatch.onclick = () => {
-  lightStroke = false
-  darkStroke = false
-  matchStroke = true
-  inverseStroke = false
-}
-
 const strokeColorInverse = document.getElementById('stroke-color-inverse')
 
+const strokeButtons = [strokeColorLight, strokeColorDark, strokeColorMatch, strokeColorInverse]
+
+strokeColorLight.onclick = () => {
+  stroke = 'light'
+  strokeButtons.forEach(button => {
+    button.classList.remove('active')
+  })
+  strokeColorLight.classList.add('active')
+}
+
+strokeColorDark.onclick = () => {
+  stroke = 'dark'
+  strokeButtons.forEach(button => {
+    button.classList.remove('active')
+  })
+  strokeColorDark.classList.add('active')
+}
+
+strokeColorMatch.onclick = () => {
+  stroke = 'match'
+  strokeButtons.forEach(button => {
+    button.classList.remove('active')
+  })
+  strokeColorMatch.classList.add('active')
+}
+
 strokeColorInverse.onclick = () => {
-  lightStroke = false
-  darkStroke = false
-  matchStroke = false
-  inverseStroke = true
+  stroke = 'inverse'
+  strokeButtons.forEach(button => {
+    button.classList.remove('active')
+  })
+  strokeColorInverse.classList.add('active')
 }
 
 const reset = document.getElementById('reset')
@@ -240,16 +237,16 @@ class Particle {
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
     ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`
     ctx.fill()
-    if (lightStroke) {
+    if (stroke === 'light') {
       ctx.strokeStyle = 'white'
     }
-    if (darkStroke) {
+    if (stroke === 'dark') {
       ctx.strokeStyle = 'black'
     }
-    if (matchStroke) {
+    if (stroke === 'match') {
       ctx.strokeStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`
     }
-    if (inverseStroke) {
+    if (stroke === 'inverse') {
       ctx.strokeStyle = `hsl(${360 - hue}, ${100 - saturation}%, ${100 - lightness}%)`
     }
     ctx.stroke()

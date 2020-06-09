@@ -5,7 +5,7 @@ const state = {
   particleSpeed: 1,
   particleSize: 85,
   // color controls
-  colorRate: 1.0,
+  colorRate: 1,
   hue: 0,
   saturation: 30,
   lightness: 10,

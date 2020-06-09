@@ -110,8 +110,10 @@ function handleSpeedControl(event) {
 
 function updateParticleSpeeds(particles) {
   particles.forEach(particle => {
-    particle.speedX = particleSpeed
-    particle.speedY = particleSpeed
+    const positiveX = particle.speedX >= 0
+    const positiveY = particle.speedY >= 0
+    particle.speedX = positiveX ? particleSpeed : -particleSpeed
+    particle.speedY = positiveY ? particleSpeed : -particleSpeed
     particle.update()
   })
 }

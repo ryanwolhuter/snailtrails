@@ -27,13 +27,13 @@ const state = {
   */
 
   hue: 0,
-  saturation: 30,
-  lightness: 10,
+  saturation: 20,
+  lightness: 20,
   colorRate: 1,
   // stroke color (one of 'light', 'dark', 'match', 'inverse')
-  stroke: 'dark',
+  stroke: 'inverse',
   // background color (one of 'light', 'dark', 'match', 'inverse')
-  background: 'dark'
+  background: 'match'
 }
 
 /* Destructure the values from state for convenient access */

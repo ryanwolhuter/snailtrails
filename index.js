@@ -31,9 +31,9 @@ const state = {
   lightness: 10,
   colorRate: 1,
   // stroke color (one of 'light', 'dark', 'match', 'inverse')
-  stroke: 'inverse',
+  stroke: 'dark',
   // background color (one of 'light', 'dark', 'match', 'inverse')
-  background: 'inverse'
+  background: 'dark'
 }
 
 /* Destructure the values from state for convenient access */
@@ -51,6 +51,27 @@ let {
   lightness,
   background,
   stroke } = state
+
+function randomize() {
+  particleSize = Math.random() * 100
+  particleSpeed = Math.random() * 50
+
+  particlesArray.forEach(particle => {
+    particle.x = Math.random() * canvas.width
+    particle.y = Math.random() * canvas.height
+    particle.radius = Math.random() * particleSize
+    particle.speedX = Math.random() * particleSpeed
+    particle.speedY = Math.random() * particleSpeed
+  })
+
+  const options = ['light', 'dark', 'match', 'inverse']
+  background = options[Math.ceil(Math.random() * 4)]
+  stroke = options[Math.ceil(Math.random() * 4)]
+  hue = Math.ceil(Math.random() * 360)
+  saturation = Math.ceil(Math.random() * 80)
+  lightness = Math.ceil(Math.random() * 100)
+  colorRate = Math.ceil(Math.random() * 5)
+}
 
 /* Setup */
 
@@ -82,6 +103,7 @@ const strokeColorDark = document.getElementById('stroke-color-dark')
 const strokeColorMatch = document.getElementById('stroke-color-match')
 const strokeColorInverse = document.getElementById('stroke-color-inverse')
 const reset = document.getElementById('reset')
+const randomizeButton = document.getElementById('randomize')
 
 const backgroundButtons = [backgroundLight, backgroundDark, backgroundMatch, backgroundInverse]
 
@@ -258,6 +280,12 @@ strokeColorInverse.onclick = () => {
 reset.onclick = () => {
   reInit()
 }
+
+randomizeButton.addEventListener('click', () => {
+  console.log('state??')
+  randomize(state)
+  reInit()
+})
 
 
 class Particle {

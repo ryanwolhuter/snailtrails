@@ -9,11 +9,8 @@ const state = {
   hue: 0,
   saturation: 30,
   lightness: 10,
-  // background
-  lightBackground: false,
-  darkBackground: false,
-  matchBackground: false,
-  inverseBackground: true,
+  // background (one of light, dark, match, inverse)
+  background: 'inverse',
   // stroke
   lightStroke: true,
   darkStroke: false,
@@ -32,10 +29,7 @@ let { // particle controls
   saturation,
   lightness,
   // background
-  lightBackground,
-  darkBackground,
-  matchBackground,
-  inverseBackground,
+  background,
   // stroke
   lightStroke,
   darkStroke,
@@ -153,38 +147,42 @@ lightnessControl.oninput = event => {
 }
 
 const backgroundLight = document.getElementById('background-light')
-
-backgroundLight.onclick = () => {
-  lightBackground = true
-  darkBackground = false
-  matchBackground = false
-  inverseBackground = false
-}
-
 const backgroundDark = document.getElementById('background-dark')
-
-backgroundDark.onclick = () => {
-  lightBackground = false
-  darkBackground = true
-  matchBackground = false
-  inverseBackground = false
-}
-
 const backgroundMatch = document.getElementById('background-match')
-
-backgroundMatch.onclick = () => {
-  lightBackground = false
-  darkBackground = false
-  matchBackground = true
-  inverseBackground = false
-}
 const backgroundInverse = document.getElementById('background-inverse')
 
+const backgroundButtons = [backgroundLight, backgroundDark, backgroundMatch, backgroundInverse]
+
+backgroundLight.onclick = () => {
+  background = 'light'
+  backgroundButtons.forEach(button => {
+    button.classList.remove('active')
+  })
+  backgroundLight.classList.add('active')
+}
+
+backgroundDark.onclick = () => {
+  background = 'dark'
+  backgroundButtons.forEach(button => {
+    button.classList.remove('active')
+  })
+  backgroundDark.classList.add('active')
+}
+
+backgroundMatch.onclick = () => {
+  background = 'match'
+  backgroundButtons.forEach(button => {
+    button.classList.remove('active')
+  })
+  backgroundMatch.classList.add('active')
+}
+
 backgroundInverse.onclick = () => {
-  lightBackground = false
-  darkBackground = false
-  matchBackground = false
-  inverseBackground = true
+  background = 'inverse'
+  backgroundButtons.forEach(button => {
+    button.classList.remove('active')
+  })
+  backgroundInverse.classList.add('active')
 }
 
 const strokeColorLight = document.getElementById('stroke-color-light')
@@ -295,16 +293,16 @@ function animate() {
   }
   hue = newHue
 
-  if (lightBackground) {
+  if (background === 'light') {
     body.style.background = 'white'
   }
-  if (darkBackground) {
+  if (background === 'dark') {
     body.style.background = 'black'
   }
-  if (matchBackground) {
+  if (background === 'match') {
     body.style.background = `hsl(${hue}, ${saturation}%, ${lightness}%)`
   }
-  if (inverseBackground) {
+  if (background === 'inverse') {
     body.style.background = `hsl(${360 - hue}, ${100 - saturation}%, ${100 - lightness}%)`
   }
 

@@ -25,6 +25,11 @@ canvas {
   display: none;
 }
 
+button.active {
+  background: #333;
+  color: white;
+}
+
 button#close {
   color: white;
   background: transparent;

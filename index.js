@@ -111,6 +111,9 @@ const strokeButtons = [strokeColorLight, strokeColorDark, strokeColorMatch, stro
 
 /* Scale foreground and background canvases to look better on retina */
 
+ctx.scale(devicePixelRatio, devicePixelRatio)
+ctxbg.scale(devicePixelRatio, devicePixelRatio)
+
 canvas.width = window.innerWidth * devicePixelRatio
 canvas.style.width = window.innerWidth
 
@@ -123,25 +126,22 @@ canvasbg.style.width = window.innerWidth
 canvasbg.height = window.innerHeight * devicePixelRatio
 canvasbg.style.height = window.innerHeight
 
-ctx.scale(devicePixelRatio, devicePixelRatio)
-ctxbg.scale(devicePixelRatio, devicePixelRatio)
-
 window.onload = () => {
   init()
   animate()
 }
 
 window.onresize = () => {
-  canvas.width = window.innerWidth * 2
+  canvas.width = window.innerWidth * devicePixelRatio
   canvas.style.width = window.innerWidth
 
-  canvas.height = window.innerHeight * 2
+  canvas.height = window.innerHeight * devicePixelRatio
   canvas.style.height = window.innerHeight
 
-  canvasbg.width = window.innerWidth * 2
+  canvasbg.width = window.innerWidth * devicePixelRatio
   canvasbg.style.width = window.innerWidth
 
-  canvasbg.height = window.innerHeight * 2
+  canvasbg.height = window.innerHeight * devicePixelRatio
   canvasbg.style.height = window.innerHeight
 }
 
@@ -282,7 +282,6 @@ reset.onclick = () => {
 }
 
 randomizeButton.addEventListener('click', () => {
-  console.log('state??')
   randomize(state)
   reInit()
 })

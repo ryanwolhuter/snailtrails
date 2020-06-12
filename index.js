@@ -195,7 +195,7 @@ function handleSizeControl(event) {
 
 function updateParticleSizes(particles) {
   particles.forEach(particle => {
-    particle.radius = Math.random() * particleSize
+    particle.radius = particleSize
     particle.update()
   })
 }

@@ -166,7 +166,6 @@ function handleCountControl(event) {
 
   if (newCount < particleCount) {
     particlesArray.splice(0, particleCount - newCount)
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
   }
 
   particleCount = newCount

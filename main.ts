@@ -1,3 +1,5 @@
+import { Colors, determineColor } from './helpers'
+
 /* 
  * All the application state lives inside this object.
  *
@@ -11,7 +13,7 @@ const state = {
   /* Particles */
 
   particlesArray: [],
-  particleCount: 30,
+  particleCount: 31,
   particleSpeed: 1,
   particleSize: 50,
   sizeScale: 0,
@@ -83,8 +85,6 @@ const ctxbg = canvasbg.getContext('2d')
 const canvas = document.createElement('canvas')
 const ctx = canvas.getContext('2d')
 
-document.body.append(canvasbg, canvas)
-
 const controls = document.getElementById('controls')
 const closeButton = document.getElementById('close')
 const showControlsButton = document.getElementById('show-controls')
@@ -112,6 +112,12 @@ const randomizeButton = document.getElementById('randomize')
 const backgroundButtons = [backgroundLight, backgroundDark, backgroundMatch, backgroundInverse]
 
 const strokeButtons = [strokeColorLight, strokeColorDark, strokeColorMatch, strokeColorInverse]
+
+const canvases = [canvasbg, canvas]
+
+for (const i in canvases) {
+  document.body.append(canvases[i])
+}
 
 /* Scale foreground and background canvases to look better on retina */
 

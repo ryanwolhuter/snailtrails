@@ -5,10 +5,10 @@
  *
  * All the values are destructured into variables with the same names below.
 */
-var state = {
+const state = {
     /* Particles */
     particlesArray: [],
-    particleCount: 30,
+    particleCount: 31,
     particleSpeed: 1,
     particleSize: 50,
     sizeScale: 0,
@@ -32,22 +32,22 @@ var state = {
     background: 'match'
 };
 /* Destructure the values from state for convenient access */
-var 
+let { 
 // particle controls
-particlesArray = state.particlesArray, particleCount = state.particleCount, particleSpeed = state.particleSpeed, particleSize = state.particleSize, sizeScale = state.sizeScale, 
+particlesArray, particleCount, particleSpeed, particleSize, sizeScale, 
 // color controls
-colorRate = state.colorRate, hue = state.hue, saturation = state.saturation, lightness = state.lightness, background = state.background, stroke = state.stroke;
+colorRate, hue, saturation, lightness, background, stroke } = state;
 function randomize() {
     particleSize = Math.random() * 100;
     particleSpeed = (Math.random() * 100) / (Math.random() * 100);
-    particlesArray.forEach(function (particle) {
+    particlesArray.forEach(particle => {
         particle.x = Math.random() * canvas.width;
         particle.y = Math.random() * canvas.height;
         particle.radius = Math.random() * particleSize;
         particle.speedX = Math.random() * particleSpeed;
         particle.speedY = Math.random() * particleSpeed;
     });
-    var options = ['light', 'dark', 'match', 'inverse'];
+    const options = ['light', 'dark', 'match', 'inverse'];
     background = options[Math.ceil(Math.random() * 4)];
     stroke = options[Math.ceil(Math.random() * 4)];
     hue = Math.ceil(Math.random() * 360);
@@ -56,35 +56,38 @@ function randomize() {
     colorRate = (Math.random() * 100) / (Math.random() * 100);
 }
 /* Setup */
-var canvasbg = document.createElement('canvas');
-var ctxbg = canvasbg.getContext('2d');
-var canvas = document.createElement('canvas');
-var ctx = canvas.getContext('2d');
-document.body.append(canvasbg, canvas);
-var controls = document.getElementById('controls');
-var closeButton = document.getElementById('close');
-var showControlsButton = document.getElementById('show-controls');
-var countControl = document.getElementById('count');
+const canvasbg = document.createElement('canvas');
+const ctxbg = canvasbg.getContext('2d');
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+const controls = document.getElementById('controls');
+const closeButton = document.getElementById('close');
+const showControlsButton = document.getElementById('show-controls');
+const countControl = document.getElementById('count');
 countControl.oninput = handleCountControl;
-var speedControl = document.getElementById('speed');
+const speedControl = document.getElementById('speed');
 speedControl.oninput = handleSpeedControl;
-var sizeControl = document.getElementById('size');
+const sizeControl = document.getElementById('size');
 sizeControl.oninput = handleSizeControl;
-var colorRateControl = document.getElementById('color-rate');
-var saturationControl = document.getElementById('saturation');
-var lightnessControl = document.getElementById('lightness');
-var backgroundLight = document.getElementById('background-light');
-var backgroundDark = document.getElementById('background-dark');
-var backgroundMatch = document.getElementById('background-match');
-var backgroundInverse = document.getElementById('background-inverse');
-var strokeColorLight = document.getElementById('stroke-color-light');
-var strokeColorDark = document.getElementById('stroke-color-dark');
-var strokeColorMatch = document.getElementById('stroke-color-match');
-var strokeColorInverse = document.getElementById('stroke-color-inverse');
-var reset = document.getElementById('reset');
-var randomizeButton = document.getElementById('randomize');
-var backgroundButtons = [backgroundLight, backgroundDark, backgroundMatch, backgroundInverse];
-var strokeButtons = [strokeColorLight, strokeColorDark, strokeColorMatch, strokeColorInverse];
+const colorRateControl = document.getElementById('color-rate');
+const saturationControl = document.getElementById('saturation');
+const lightnessControl = document.getElementById('lightness');
+const backgroundLight = document.getElementById('background-light');
+const backgroundDark = document.getElementById('background-dark');
+const backgroundMatch = document.getElementById('background-match');
+const backgroundInverse = document.getElementById('background-inverse');
+const strokeColorLight = document.getElementById('stroke-color-light');
+const strokeColorDark = document.getElementById('stroke-color-dark');
+const strokeColorMatch = document.getElementById('stroke-color-match');
+const strokeColorInverse = document.getElementById('stroke-color-inverse');
+const reset = document.getElementById('reset');
+const randomizeButton = document.getElementById('randomize');
+const backgroundButtons = [backgroundLight, backgroundDark, backgroundMatch, backgroundInverse];
+const strokeButtons = [strokeColorLight, strokeColorDark, strokeColorMatch, strokeColorInverse];
+const canvases = [canvasbg, canvas];
+for (const i in canvases) {
+    document.body.append(canvases[i]);
+}
 /* Scale foreground and background canvases to look better on retina */
 ctx.scale(devicePixelRatio, devicePixelRatio);
 ctxbg.scale(devicePixelRatio, devicePixelRatio);
@@ -96,11 +99,11 @@ canvasbg.width = window.innerWidth * devicePixelRatio;
 canvasbg.style.width = window.innerWidth;
 canvasbg.height = window.innerHeight * devicePixelRatio;
 canvasbg.style.height = window.innerHeight;
-window.onload = function () {
+window.onload = () => {
     init();
     animate();
 };
-window.onresize = function () {
+window.onresize = () => {
     canvas.width = window.innerWidth * devicePixelRatio;
     canvas.style.width = window.innerWidth;
     canvas.height = window.innerHeight * devicePixelRatio;
@@ -110,17 +113,17 @@ window.onresize = function () {
     canvasbg.height = window.innerHeight * devicePixelRatio;
     canvasbg.style.height = window.innerHeight;
 };
-closeButton.onclick = function () {
+closeButton.onclick = () => {
     showControlsButton.style.display = 'grid';
     controls.style.display = 'none';
 };
-showControlsButton.onclick = function () {
+showControlsButton.onclick = () => {
     showControlsButton.style.display = 'none';
     controls.style.display = 'grid';
 };
 /* Event handlers */
 function handleCountControl(event) {
-    var newCount = Number(event.target.value);
+    const newCount = Number(event.target.value);
     if (newCount > particleCount) {
         particlesArray.push(new Particle());
     }
@@ -130,113 +133,113 @@ function handleCountControl(event) {
     particleCount = newCount;
 }
 function handleSpeedControl(event) {
-    var newSpeed = Number(event.target.value);
+    const newSpeed = Number(event.target.value);
     particleSpeed = newSpeed;
     updateParticleSpeeds(particlesArray);
 }
 function updateParticleSpeeds(particles) {
-    particles.forEach(function (particle) {
-        var positiveX = particle.speedX >= 0;
-        var positiveY = particle.speedY >= 0;
+    particles.forEach(particle => {
+        const positiveX = particle.speedX >= 0;
+        const positiveY = particle.speedY >= 0;
         particle.speedX = positiveX ? particleSpeed : -particleSpeed;
         particle.speedY = positiveY ? particleSpeed : -particleSpeed;
         particle.update();
     });
 }
 function handleSizeControl(event) {
-    var newSize = Number(event.target.value);
-    var change = newSize - particleSize;
+    const newSize = Number(event.target.value);
+    const change = newSize - particleSize;
     updateParticleSizes(particlesArray, change);
 }
 function updateParticleSizes(particles, change) {
-    particles.forEach(function (particle) {
+    particles.forEach(particle => {
         particle.updateSize(change);
     });
 }
-colorRateControl.oninput = function (event) {
+colorRateControl.oninput = event => {
     colorRate = Number(event.target.value);
 };
-saturationControl.oninput = function (event) {
+saturationControl.oninput = event => {
     saturation = event.target.value;
 };
-lightnessControl.oninput = function (event) {
+lightnessControl.oninput = event => {
     lightness = event.target.value;
 };
-backgroundLight.onclick = function () {
+backgroundLight.onclick = () => {
     background = 'light';
-    backgroundButtons.forEach(function (button) {
+    backgroundButtons.forEach(button => {
         button.classList.remove('active');
     });
     backgroundLight.classList.add('active');
 };
-backgroundDark.onclick = function () {
+backgroundDark.onclick = () => {
     background = 'dark';
-    backgroundButtons.forEach(function (button) {
+    backgroundButtons.forEach(button => {
         button.classList.remove('active');
     });
     backgroundDark.classList.add('active');
 };
-backgroundMatch.onclick = function () {
+backgroundMatch.onclick = () => {
     background = 'match';
-    backgroundButtons.forEach(function (button) {
+    backgroundButtons.forEach(button => {
         button.classList.remove('active');
     });
     backgroundMatch.classList.add('active');
 };
-backgroundInverse.onclick = function () {
+backgroundInverse.onclick = () => {
     background = 'inverse';
-    backgroundButtons.forEach(function (button) {
+    backgroundButtons.forEach(button => {
         button.classList.remove('active');
     });
     backgroundInverse.classList.add('active');
 };
-strokeColorLight.onclick = function () {
+strokeColorLight.onclick = () => {
     stroke = 'light';
-    strokeButtons.forEach(function (button) {
+    strokeButtons.forEach(button => {
         button.classList.remove('active');
     });
     strokeColorLight.classList.add('active');
 };
-strokeColorDark.onclick = function () {
+strokeColorDark.onclick = () => {
     stroke = 'dark';
-    strokeButtons.forEach(function (button) {
+    strokeButtons.forEach(button => {
         button.classList.remove('active');
     });
     strokeColorDark.classList.add('active');
 };
-strokeColorMatch.onclick = function () {
+strokeColorMatch.onclick = () => {
     stroke = 'match';
-    strokeButtons.forEach(function (button) {
+    strokeButtons.forEach(button => {
         button.classList.remove('active');
     });
     strokeColorMatch.classList.add('active');
 };
-strokeColorInverse.onclick = function () {
+strokeColorInverse.onclick = () => {
     stroke = 'inverse';
-    strokeButtons.forEach(function (button) {
+    strokeButtons.forEach(button => {
         button.classList.remove('active');
     });
     strokeColorInverse.classList.add('active');
 };
-reset.onclick = function () {
+reset.onclick = () => {
     reInit();
 };
-randomizeButton.addEventListener('click', function () {
+randomizeButton.addEventListener('click', () => {
     randomize(state);
     reInit();
 });
-var Particle = /** @class */ (function () {
-    function Particle() {
+class Particle {
+    constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
         this.radius = Math.random() * particleSize;
         this.speedX = Math.random() * particleSpeed;
         this.speedY = Math.random() * particleSpeed;
     }
-    Particle.prototype.draw = function () {
+    draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "hsl(" + hue + ", " + saturation + "%, " + lightness + "%)";
+        ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
         ctx.fill();
         if (stroke === 'light') {
             ctx.strokeStyle = 'white';
@@ -245,14 +248,14 @@ var Particle = /** @class */ (function () {
             ctx.strokeStyle = 'black';
         }
         if (stroke === 'match') {
-            ctx.strokeStyle = "hsl(" + hue + ", " + saturation + "%, " + lightness + "%)";
+            ctx.strokeStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
         }
         if (stroke === 'inverse') {
-            ctx.strokeStyle = "hsl(" + (360 - hue) + ", " + (100 - saturation) + "%, " + (100 - lightness) + "%)";
+            ctx.strokeStyle = `hsl(${360 - hue}, ${100 - saturation}%, ${100 - lightness}%)`;
         }
         ctx.stroke();
-    };
-    Particle.prototype.update = function () {
+    }
+    update() {
         this.x += this.speedX;
         this.y += this.speedY;
         if (this.x + this.radius > canvas.width
@@ -264,9 +267,9 @@ var Particle = /** @class */ (function () {
             this.speedY = -this.speedY;
         }
         this.draw();
-    };
-    Particle.prototype.updateSize = function (change) {
-        var chaching = this.radius + change;
+    }
+    updateSize(change) {
+        let chaching = this.radius + change;
         if ((chaching > 0)) {
             this.radius += change;
         }
@@ -274,17 +277,16 @@ var Particle = /** @class */ (function () {
             console.log('ouch');
             this.radius = 1;
         }
-    };
-    return Particle;
-}());
+    }
+}
 function init() {
-    for (var i = 0; i < particleCount; i++) {
+    for (let i = 0; i < particleCount; i++) {
         particlesArray.push(new Particle());
     }
 }
 function animate() {
-    for (var i = 0; i < particlesArray.length; i++) {
-        var element = particlesArray[i];
+    for (let i = 0; i < particlesArray.length; i++) {
+        const element = particlesArray[i];
         element.update();
     }
     if (hue >= 360) {
@@ -298,10 +300,10 @@ function animate() {
         ctxbg.fillStyle = 'black';
     }
     if (background === 'match') {
-        ctxbg.fillStyle = "hsl(" + hue + ", " + saturation + "%, " + lightness + "%)";
+        ctxbg.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
     }
     if (background === 'inverse') {
-        ctxbg.fillStyle = "hsl(" + (360 - hue) + ", " + (100 - saturation) + "%, " + (100 - lightness) + "%)";
+        ctxbg.fillStyle = `hsl(${360 - hue}, ${100 - saturation}%, ${100 - lightness}%)`;
     }
     ctxbg.fillRect(0, 0, canvas.width, canvas.height);
     requestAnimationFrame(animate);

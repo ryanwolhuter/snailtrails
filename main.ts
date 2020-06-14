@@ -13,7 +13,8 @@ const state = {
   particlesArray: [],
   particleCount: 30,
   particleSpeed: 1,
-  particleSize: 85,
+  particleSize: 50,
+  sizeScale: 0,
 
   /* Colors
    *
@@ -44,6 +45,7 @@ let {
   particleCount,
   particleSpeed,
   particleSize,
+  sizeScale,
   // color controls
   colorRate,
   hue,
@@ -75,11 +77,13 @@ function randomize() {
 
 /* Setup */
 
-const canvas = document.getElementById('canvas')
+const canvasbg = document.createElement('canvas')
+const ctxbg = canvasbg.getContext('2d')
+
+const canvas = document.createElement('canvas')
 const ctx = canvas.getContext('2d')
 
-const canvasbg = document.getElementById('canvasbg')
-const ctxbg = canvasbg.getContext('2d')
+document.body.append(canvasbg, canvas)
 
 const controls = document.getElementById('controls')
 const closeButton = document.getElementById('close')
@@ -189,14 +193,14 @@ function updateParticleSpeeds(particles) {
 
 function handleSizeControl(event) {
   const newSize = Number(event.target.value)
-  particleSize = newSize
-  updateParticleSizes(particlesArray)
+  const change = newSize - particleSize
+  updateParticleSizes(particlesArray, change)
 }
 
-function updateParticleSizes(particles) {
+function updateParticleSizes(particles, change) {
+
   particles.forEach(particle => {
-    particle.radius = particleSize
-    particle.update()
+    particle.updateSize(change)
   })
 }
 
@@ -331,6 +335,17 @@ class Particle {
       this.speedY = -this.speedY
     }
     this.draw()
+  }
+
+  updateSize(change) {
+    let chaching = this.radius + change
+    if ((chaching > 0)) {
+      this.radius += change
+    } else {
+      console.log('ouch');
+      
+      this.radius = 1
+    }
   }
 }
 

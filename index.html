@@ -17,7 +17,7 @@
     <label for="speed">Speed</label>
     <input type="range" name="speed" id="speed" min="0.1" max="10" step="0.1" value="1">
     <label for="size">Size</label>
-    <input type="range" name="size" id="size" min="1" max="256" step="0.1" value="85">
+    <input type="range" name="size" id="size" min="-50" max="50" step="0.001" value="0">
     <label for="color-rate">Color Change Speed</label>
     <input type="range" name="color-rate" id="color-rate" min="0.1" max="10" step="0.1" value="1">
     <label for="saturation">Saturation (%)</label>
@@ -43,9 +43,7 @@
     <label for="reset">Randomize</label>
     <button id="randomize">randomize</button>
   </div>
-  <canvas id="canvas"></canvas>
-  <canvas id="canvasbg"></canvas>
-  <script src="index.js"></script>
+  <script src="main.js"></script>
 </body>
 
 </html>

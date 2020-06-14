@@ -16,6 +16,7 @@ const state = {
   particleCount: 31,
   particleSpeed: 1,
   particleSize: 50,
+  particleFill: Colors.match,
   sizeScale: 0,
 
   /* Colors
@@ -33,7 +34,7 @@ const state = {
   saturation: 20,
   lightness: 20,
   colorRate: 1,
-  stroke: 'inverse',
+  stroke: Colors.inverse,
   background: Colors.match
 }
 
@@ -45,6 +46,7 @@ let {
   particleCount,
   particleSpeed,
   particleSize,
+  particleFill,
   // color controls
   colorRate,
   hue,
@@ -75,10 +77,10 @@ function randomize() {
 
 /* Setup */
 
-const canvasbg = document.getElementById('canvasbg')
+const canvasbg = <HTMLCanvasElement> document.getElementById('canvasbg')
 const ctxbg = canvasbg.getContext('2d')
 
-const canvas = document.getElementById('canvas')
+const canvas = <HTMLCanvasElement> document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
 const controls = document.getElementById('controls')
@@ -224,7 +226,7 @@ backgroundInverse.onclick = () => {
 }
 
 strokeColorLight.onclick = () => {
-  stroke = 'light'
+  stroke = Colors.light
   strokeButtons.forEach(button => {
     button.classList.remove('active')
   })
@@ -232,7 +234,7 @@ strokeColorLight.onclick = () => {
 }
 
 strokeColorDark.onclick = () => {
-  stroke = 'dark'
+  stroke = Colors.dark
   strokeButtons.forEach(button => {
     button.classList.remove('active')
   })
@@ -240,7 +242,7 @@ strokeColorDark.onclick = () => {
 }
 
 strokeColorMatch.onclick = () => {
-  stroke = 'match'
+  stroke = Colors.match
   strokeButtons.forEach(button => {
     button.classList.remove('active')
   })
@@ -248,7 +250,7 @@ strokeColorMatch.onclick = () => {
 }
 
 strokeColorInverse.onclick = () => {
-  stroke = 'inverse'
+  stroke = Colors.inverse
   strokeButtons.forEach(button => {
     button.classList.remove('active')
   })
@@ -277,21 +279,10 @@ class Particle {
   draw() {
     ctx.beginPath()
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
-    ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`
+    ctx.fillStyle = determineColor(particleFill, hue, saturation, lightness)
     ctx.fill()
 
-    if (stroke === 'light') {
-      ctx.strokeStyle = 'white'
-    }
-    if (stroke === 'dark') {
-      ctx.strokeStyle = 'black'
-    }
-    if (stroke === 'match') {
-      ctx.strokeStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`
-    }
-    if (stroke === 'inverse') {
-      ctx.strokeStyle = `hsl(${360 - hue}, ${100 - saturation}%, ${100 - lightness}%)`
-    }
+    ctx.strokeStyle = determineColor(stroke, hue, saturation, lightness)
 
     ctx.stroke()
   }

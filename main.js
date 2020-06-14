@@ -1,4 +1,4 @@
-import { Colors, determineColor, scaleCanvases } from './helpers.js';
+import { Colors, determineColor, scaleCanvases } from './helpers/helpers.js';
 /*
  * All the application state lives inside this object.
  *
@@ -213,12 +213,12 @@ randomizeButton.addEventListener('click', () => {
     reInit();
 });
 class Particle {
-    constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.radius = Math.random() * particleSize;
-        this.speedX = Math.random() * particleSpeed;
-        this.speedY = Math.random() * particleSpeed;
+    constructor(x = Math.random() * canvas.width, y = Math.random() * canvas.height, radius = Math.random() * particleSize, speedX = Math.random() * particleSpeed, speedY = Math.random() * particleSpeed) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.speedX = speedX;
+        this.speedY = speedY;
     }
     draw() {
         ctx.beginPath();

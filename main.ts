@@ -67,7 +67,14 @@ function randomize() {
     particle.speedY = Math.random() * particleSpeed
   })
 
-  background = Colors[Math.ceil(Math.random() * 4)]
+  const options = [
+    Colors.light,
+    Colors.dark,
+    Colors.match,
+    Colors.inverse
+  ]
+
+  background = options[Math.ceil(Math.random() * 4)]
   stroke = options[Math.ceil(Math.random() * 4)]
   hue = Math.ceil(Math.random() * 360)
   saturation = Math.ceil(Math.random() * 80)
@@ -77,10 +84,10 @@ function randomize() {
 
 /* Setup */
 
-const canvasbg = <HTMLCanvasElement> document.getElementById('canvasbg')
+const canvasbg = <HTMLCanvasElement>document.getElementById('canvasbg')
 const ctxbg = canvasbg.getContext('2d')
 
-const canvas = <HTMLCanvasElement> document.getElementById('canvas')
+const canvas = <HTMLCanvasElement>document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
 const controls = document.getElementById('controls')
@@ -308,8 +315,6 @@ class Particle {
     if ((chaching > 0)) {
       this.radius += change
     } else {
-      console.log('ouch');
-
       this.radius = 1
     }
   }

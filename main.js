@@ -47,7 +47,13 @@ function randomize() {
         particle.speedX = Math.random() * particleSpeed;
         particle.speedY = Math.random() * particleSpeed;
     });
-    background = Colors[Math.ceil(Math.random() * 4)];
+    const options = [
+        Colors.light,
+        Colors.dark,
+        Colors.match,
+        Colors.inverse
+    ];
+    background = options[Math.ceil(Math.random() * 4)];
     stroke = options[Math.ceil(Math.random() * 4)];
     hue = Math.ceil(Math.random() * 360);
     saturation = Math.ceil(Math.random() * 80);
@@ -245,7 +251,6 @@ class Particle {
             this.radius += change;
         }
         else {
-            console.log('ouch');
             this.radius = 1;
         }
     }

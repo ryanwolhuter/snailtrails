@@ -8,9 +8,9 @@ export var Colors;
 // Scales a canvas with context to look better on retina
 function scaleForRetina(canvas, ctx) {
     canvas.width = window.innerWidth * devicePixelRatio;
-    canvas.style.width = window.innerWidth;
+    canvas.style.width = window.innerWidth + 'px';
     canvas.height = window.innerHeight * devicePixelRatio;
-    canvas.style.height = window.innerHeight;
+    canvas.style.height = window.innerHeight + 'px';
     ctx.scale(devicePixelRatio, devicePixelRatio);
 }
 export function scaleCanvases(canvases) {

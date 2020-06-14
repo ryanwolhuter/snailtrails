@@ -33,9 +33,7 @@ const state = {
   saturation: 20,
   lightness: 20,
   colorRate: 1,
-  // stroke color (one of 'light', 'dark', 'match', 'inverse')
   stroke: 'inverse',
-  // background color (one of 'light', 'dark', 'match', 'inverse')
   background: Colors.match
 }
 
@@ -67,8 +65,7 @@ function randomize() {
     particle.speedY = Math.random() * particleSpeed
   })
 
-  const options = ['light', 'dark', 'match', 'inverse']
-  background = options[Math.ceil(Math.random() * 4)]
+  background = Colors[Math.ceil(Math.random() * 4)]
   stroke = options[Math.ceil(Math.random() * 4)]
   hue = Math.ceil(Math.random() * 360)
   saturation = Math.ceil(Math.random() * 80)
@@ -78,10 +75,10 @@ function randomize() {
 
 /* Setup */
 
-const canvasbg = document.createElement('canvas')
+const canvasbg = document.getElementById('canvasbg')
 const ctxbg = canvasbg.getContext('2d')
 
-const canvas = document.createElement('canvas')
+const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
 
 const controls = document.getElementById('controls')

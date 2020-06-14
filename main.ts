@@ -8,11 +8,12 @@ import { Colors, determineColor, scaleCanvases } from './helpers/helpers.js'
  * All the values are destructured into variables with the same names below.
 */
 
+const particles: Particle[] = []
+
 const state = {
 
   /* Particles */
 
-  particlesArray: [],
   particleCount: 31,
   particleSpeed: 1,
   particleSize: 50,
@@ -42,7 +43,6 @@ const state = {
 
 let {
   // particle controls
-  particlesArray,
   particleCount,
   particleSpeed,
   particleSize,
@@ -59,7 +59,7 @@ function randomize() {
   particleSize = Math.random() * 100
   particleSpeed = (Math.random() * 100) / (Math.random() * 100)
 
-  particlesArray.forEach(particle => {
+  particles.forEach((particle: Particle) => {
     particle.x = Math.random() * canvas.width
     particle.y = Math.random() * canvas.height
     particle.radius = Math.random() * particleSize
@@ -95,8 +95,9 @@ const closeButton = document.getElementById('close')
 const showControlsButton = document.getElementById('show-controls')
 
 const countControl = document.getElementById('count')
-countControl.oninput = handleCountControl
+countControl!.oninput = handleCountControl
 const speedControl = document.getElementById('speed')
+
 speedControl.oninput = handleSpeedControl
 const sizeControl = document.getElementById('size')
 sizeControl.oninput = handleSizeControl
@@ -133,39 +134,40 @@ window.onresize = () => {
   scaleCanvases(canvases)
 }
 
-closeButton.onclick = () => {
-  showControlsButton.style.display = 'grid'
-  controls.style.display = 'none'
+closeButton!.onclick = () => {
+  showControlsButton!.style.display = 'grid'
+  controls!.style.display = 'none'
 }
 
-showControlsButton.onclick = () => {
-  showControlsButton.style.display = 'none'
-  controls.style.display = 'grid'
+showControlsButton!.onclick = () => {
+  showControlsButton!.style.display = 'none'
+  controls!.style.display = 'grid'
 }
 
 /* Event handlers */
 
-function handleCountControl(event) {
-  const newCount = Number(event.target.value)
-
+function handleCountControl(event: Event) {
+  const element = event.currentTarget as HTMLInputElement
+  const newCount = Number(element.value)
   if (newCount > particleCount) {
-    particlesArray.push(new Particle())
+    particles.push(new Particle())
   }
 
   if (newCount < particleCount) {
-    particlesArray.splice(0, particleCount - newCount)
+    particles.splice(0, particleCount - newCount)
   }
 
   particleCount = newCount
 }
 
-function handleSpeedControl(event) {
-  const newSpeed = Number(event.target.value)
+function handleSpeedControl(event: Event) {
+  const element = event.currentTarget as HTMLInputElement
+  const newSpeed = Number(element.value)
   particleSpeed = newSpeed
-  updateParticleSpeeds(particlesArray)
+  updateParticleSpeeds(particles)
 }
 
-function updateParticleSpeeds(particles) {
+function updateParticleSpeeds(particles: Particle[]) {
   particles.forEach(particle => {
     const positiveX = particle.speedX >= 0
     const positiveY = particle.speedY >= 0
@@ -175,30 +177,41 @@ function updateParticleSpeeds(particles) {
   })
 }
 
-function handleSizeControl(event) {
-  const newSize = Number(event.target.value)
+function handleSizeControl(event: Event) {
+  const element = event.currentTarget as HTMLInputElement
+  const newSize = Number(element.value)
   const change = newSize - particleSize
-  updateParticleSizes(particlesArray, change)
+  updateParticleSizes(particles, change)
 }
 
-function updateParticleSizes(particles, change) {
+function updateParticleSizes(particles: Particle[], change: number) {
 
-  particles.forEach(particle => {
+  particles.forEach((particle: Particle) => {
     particle.updateSize(change)
   })
 }
 
-colorRateControl.oninput = event => {
-  colorRate = Number(event.target.value)
-}
+colorRateControl.addEventListener(
+  'input',
+  (event: Event) => {
+    const element = event.currentTarget as HTMLInputElement
+    colorRate = Number(element.value)
+  })
 
-saturationControl.oninput = event => {
-  saturation = event.target.value
-}
+saturationControl.addEventListener(
+  'input',
+  (event: Event) => {
+    const element = event.currentTarget as HTMLInputElement
+    saturation = Number(element.value)
+  })
 
-lightnessControl.oninput = event => {
-  lightness = event.target.value
-}
+lightnessControl.addEventListener(
+  'input',
+  (event: Event) => {
+    const element = event.currentTarget as HTMLInputElement
+    lightness = Number(element.value)
+  }
+)
 
 backgroundLight.onclick = () => {
   background = Colors.light
@@ -276,22 +289,20 @@ randomizeButton.addEventListener('click', () => {
 
 class Particle {
   constructor(
-    private x = Math.random() * canvas.width,
-    private y = Math.random() * canvas.height,
-    private radius = Math.random() * particleSize,
-    private speedX = Math.random() * particleSpeed,
-    private speedY = Math.random() * particleSpeed) {
+    public x = Math.random() * canvas.width,
+    public y = Math.random() * canvas.height,
+    public radius = Math.random() * particleSize,
+    public speedX = Math.random() * particleSpeed,
+    public speedY = Math.random() * particleSpeed) {
   }
 
   draw() {
-    ctx.beginPath()
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
-    ctx.fillStyle = determineColor(particleFill, hue, saturation, lightness)
-    ctx.fill()
-
-    ctx.strokeStyle = determineColor(stroke, hue, saturation, lightness)
-
-    ctx.stroke()
+    ctx!.beginPath()
+    ctx!.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
+    ctx!.fillStyle = determineColor(particleFill, hue, saturation, lightness)
+    ctx!.fill()
+    ctx!.strokeStyle = determineColor(stroke, hue, saturation, lightness)
+    ctx!.stroke()
   }
 
   update() {
@@ -310,9 +321,9 @@ class Particle {
     this.draw()
   }
 
-  updateSize(change) {
-    let chaching = this.radius + change
-    if ((chaching > 0)) {
+  updateSize(change: number) {
+    let changedRadius = this.radius + change
+    if ((changedRadius > 0)) {
       this.radius += change
     } else {
       this.radius = 1
@@ -322,13 +333,13 @@ class Particle {
 
 function init() {
   for (let i = 0; i < particleCount; i++) {
-    particlesArray.push(new Particle())
+    particles.push(new Particle())
   }
 }
 
 function animate() {
-  for (let i = 0; i < particlesArray.length; i++) {
-    const element = particlesArray[i]
+  for (let i = 0; i < particles.length; i++) {
+    const element = particles[i]
     element.update()
   }
 
@@ -345,7 +356,7 @@ function animate() {
 }
 
 function reInit() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-  particlesArray.length = 0
+  ctx!.clearRect(0, 0, canvas.width, canvas.height)
+  particles.length = 0
   init()
 }

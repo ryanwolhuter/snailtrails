@@ -6,9 +6,9 @@ import { Colors, determineColor, scaleCanvases } from './helpers/helpers.js';
  *
  * All the values are destructured into variables with the same names below.
 */
+const particles = [];
 const state = {
     /* Particles */
-    particlesArray: [],
     particleCount: 31,
     particleSpeed: 1,
     particleSize: 50,
@@ -34,13 +34,13 @@ const state = {
 /* Destructure the values from state for convenient access */
 let { 
 // particle controls
-particlesArray, particleCount, particleSpeed, particleSize, particleFill, 
+particleCount, particleSpeed, particleSize, particleFill, 
 // color controls
 colorRate, hue, saturation, lightness, background, stroke } = state;
 function randomize() {
     particleSize = Math.random() * 100;
     particleSpeed = (Math.random() * 100) / (Math.random() * 100);
-    particlesArray.forEach(particle => {
+    particles.forEach((particle) => {
         particle.x = Math.random() * canvas.width;
         particle.y = Math.random() * canvas.height;
         particle.radius = Math.random() * particleSize;
@@ -111,19 +111,21 @@ showControlsButton.onclick = () => {
 };
 /* Event handlers */
 function handleCountControl(event) {
-    const newCount = Number(event.target.value);
+    const element = event.currentTarget;
+    const newCount = Number(element.value);
     if (newCount > particleCount) {
-        particlesArray.push(new Particle());
+        particles.push(new Particle());
     }
     if (newCount < particleCount) {
-        particlesArray.splice(0, particleCount - newCount);
+        particles.splice(0, particleCount - newCount);
     }
     particleCount = newCount;
 }
 function handleSpeedControl(event) {
-    const newSpeed = Number(event.target.value);
+    const element = event.currentTarget;
+    const newSpeed = Number(element.value);
     particleSpeed = newSpeed;
-    updateParticleSpeeds(particlesArray);
+    updateParticleSpeeds(particles);
 }
 function updateParticleSpeeds(particles) {
     particles.forEach(particle => {
@@ -135,24 +137,28 @@ function updateParticleSpeeds(particles) {
     });
 }
 function handleSizeControl(event) {
-    const newSize = Number(event.target.value);
+    const element = event.currentTarget;
+    const newSize = Number(element.value);
     const change = newSize - particleSize;
-    updateParticleSizes(particlesArray, change);
+    updateParticleSizes(particles, change);
 }
 function updateParticleSizes(particles, change) {
-    particles.forEach(particle => {
+    particles.forEach((particle) => {
         particle.updateSize(change);
     });
 }
-colorRateControl.oninput = event => {
-    colorRate = Number(event.target.value);
-};
-saturationControl.oninput = event => {
-    saturation = event.target.value;
-};
-lightnessControl.oninput = event => {
-    lightness = event.target.value;
-};
+colorRateControl.addEventListener('input', (event) => {
+    const element = event.currentTarget;
+    colorRate = Number(element.value);
+});
+saturationControl.addEventListener('input', (event) => {
+    const element = event.currentTarget;
+    saturation = Number(element.value);
+});
+lightnessControl.addEventListener('input', (event) => {
+    const element = event.currentTarget;
+    lightness = Number(element.value);
+});
 backgroundLight.onclick = () => {
     background = Colors.light;
     backgroundButtons.forEach(button => {
@@ -246,8 +252,8 @@ class Particle {
         this.draw();
     }
     updateSize(change) {
-        let chaching = this.radius + change;
-        if ((chaching > 0)) {
+        let changedRadius = this.radius + change;
+        if ((changedRadius > 0)) {
             this.radius += change;
         }
         else {
@@ -257,12 +263,12 @@ class Particle {
 }
 function init() {
     for (let i = 0; i < particleCount; i++) {
-        particlesArray.push(new Particle());
+        particles.push(new Particle());
     }
 }
 function animate() {
-    for (let i = 0; i < particlesArray.length; i++) {
-        const element = particlesArray[i];
+    for (let i = 0; i < particles.length; i++) {
+        const element = particles[i];
         element.update();
     }
     if (hue >= 360) {
@@ -275,6 +281,6 @@ function animate() {
 }
 function reInit() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particlesArray.length = 0;
+    particles.length = 0;
     init();
 }

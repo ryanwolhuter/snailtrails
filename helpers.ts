@@ -7,9 +7,9 @@ export enum Colors {
 
 export function determineColor(
   selection: Colors,
-  hue: number,
-  saturation: number,
-  lightness: number,
+  hue = 0,
+  saturation = 100,
+  lightness = 50,
   opacity = 1) {
   if (selection === Colors.light) {
     return `hsl(0, 0%, 100%, ${opacity})`

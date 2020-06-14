@@ -5,7 +5,7 @@ export var Colors;
     Colors[Colors["match"] = 2] = "match";
     Colors[Colors["inverse"] = 3] = "inverse";
 })(Colors || (Colors = {}));
-export function determineColor(selection, hue, saturation, lightness, opacity = 1) {
+export function determineColor(selection, hue = 0, saturation = 100, lightness = 50, opacity = 1) {
     if (selection === Colors.light) {
         return `hsl(0, 0%, 100%, ${opacity})`;
     }

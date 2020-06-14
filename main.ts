@@ -1,4 +1,4 @@
-import { Colors, determineColor } from './helpers'
+import { Colors, determineColor, scaleForRetina } from './helpers.js'
 
 /* 
  * All the application state lives inside this object.
@@ -112,28 +112,22 @@ const backgroundButtons = [backgroundLight, backgroundDark, backgroundMatch, bac
 
 const strokeButtons = [strokeColorLight, strokeColorDark, strokeColorMatch, strokeColorInverse]
 
-const canvases = [canvasbg, canvas]
+const canvases = [
+  {
+    canvas: canvasbg, ctx: ctxbg
+  },
+  { canvas, ctx }
+]
 
-for (const i in canvases) {
-  document.body.append(canvases[i])
-}
+canvases.forEach(({ canvas, ctx }) => {
+  document.body.append(canvas)
+  scaleForRetina(canvas, ctx)
+})
 
 /* Scale foreground and background canvases to look better on retina */
 
-ctx.scale(devicePixelRatio, devicePixelRatio)
-ctxbg.scale(devicePixelRatio, devicePixelRatio)
-
-canvas.width = window.innerWidth * devicePixelRatio
-canvas.style.width = window.innerWidth
-
-canvas.height = window.innerHeight * devicePixelRatio
-canvas.style.height = window.innerHeight
-
-canvasbg.width = window.innerWidth * devicePixelRatio
-canvasbg.style.width = window.innerWidth
-
-canvasbg.height = window.innerHeight * devicePixelRatio
-canvasbg.style.height = window.innerHeight
+// ctx.scale(devicePixelRatio, devicePixelRatio)
+// ctxbg.scale(devicePixelRatio, devicePixelRatio)
 
 window.onload = () => {
   init()
@@ -348,7 +342,7 @@ class Particle {
       this.radius += change
     } else {
       console.log('ouch');
-      
+
       this.radius = 1
     }
   }

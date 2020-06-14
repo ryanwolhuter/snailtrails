@@ -5,6 +5,16 @@ export enum Colors {
   inverse
 }
 
+export function scaleForRetina(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+  canvas.width = window.innerWidth * devicePixelRatio
+  canvas.style.width = window.innerWidth + 'px'
+
+  canvas.height = window.innerHeight * devicePixelRatio
+  canvas.style.height = window.innerHeight + 'px'
+
+  ctx.scale(devicePixelRatio, devicePixelRatio)
+}
+
 export function determineColor(
   selection: Colors,
   hue = 0,

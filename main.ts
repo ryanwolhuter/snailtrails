@@ -47,7 +47,6 @@ let {
   particleCount,
   particleSpeed,
   particleSize,
-  sizeScale,
   // color controls
   colorRate,
   hue,

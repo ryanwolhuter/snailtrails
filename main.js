@@ -56,7 +56,7 @@ function randomize() {
     background = options[Math.ceil(Math.random() * 4)];
     stroke = options[Math.ceil(Math.random() * 4)];
     hue = Math.ceil(Math.random() * 360);
-    saturation = Math.ceil(Math.random() * 80);
+    saturation = Math.ceil(Math.random() * 100);
     lightness = Math.ceil(Math.random() * 100);
     colorRate = (Math.random() * 100) / (Math.random() * 100);
 }

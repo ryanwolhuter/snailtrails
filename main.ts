@@ -1,4 +1,4 @@
-import { Colors, determineColor, scaleForRetina } from './helpers.js'
+import { Colors, determineColor, scaleCanvases } from './helpers.js'
 
 /* 
  * All the application state lives inside this object.
@@ -36,7 +36,7 @@ const state = {
   // stroke color (one of 'light', 'dark', 'match', 'inverse')
   stroke: 'inverse',
   // background color (one of 'light', 'dark', 'match', 'inverse')
-  background: 'match'
+  background: Colors.match
 }
 
 /* Destructure the values from state for convenient access */
@@ -113,39 +113,18 @@ const backgroundButtons = [backgroundLight, backgroundDark, backgroundMatch, bac
 const strokeButtons = [strokeColorLight, strokeColorDark, strokeColorMatch, strokeColorInverse]
 
 const canvases = [
-  {
-    canvas: canvasbg, ctx: ctxbg
-  },
+  { canvas: canvasbg, ctx: ctxbg },
   { canvas, ctx }
 ]
 
-canvases.forEach(({ canvas, ctx }) => {
-  document.body.append(canvas)
-  scaleForRetina(canvas, ctx)
-})
-
-/* Scale foreground and background canvases to look better on retina */
-
-// ctx.scale(devicePixelRatio, devicePixelRatio)
-// ctxbg.scale(devicePixelRatio, devicePixelRatio)
-
 window.onload = () => {
+  scaleCanvases(canvases)
   init()
   animate()
 }
 
 window.onresize = () => {
-  canvas.width = window.innerWidth * devicePixelRatio
-  canvas.style.width = window.innerWidth
-
-  canvas.height = window.innerHeight * devicePixelRatio
-  canvas.style.height = window.innerHeight
-
-  canvasbg.width = window.innerWidth * devicePixelRatio
-  canvasbg.style.width = window.innerWidth
-
-  canvasbg.height = window.innerHeight * devicePixelRatio
-  canvasbg.style.height = window.innerHeight
+  scaleCanvases(canvases)
 }
 
 closeButton.onclick = () => {
@@ -216,7 +195,7 @@ lightnessControl.oninput = event => {
 }
 
 backgroundLight.onclick = () => {
-  background = 'light'
+  background = Colors.light
   backgroundButtons.forEach(button => {
     button.classList.remove('active')
   })
@@ -224,7 +203,7 @@ backgroundLight.onclick = () => {
 }
 
 backgroundDark.onclick = () => {
-  background = 'dark'
+  background = Colors.dark
   backgroundButtons.forEach(button => {
     button.classList.remove('active')
   })
@@ -232,7 +211,7 @@ backgroundDark.onclick = () => {
 }
 
 backgroundMatch.onclick = () => {
-  background = 'match'
+  background = Colors.match
   backgroundButtons.forEach(button => {
     button.classList.remove('active')
   })
@@ -240,7 +219,7 @@ backgroundMatch.onclick = () => {
 }
 
 backgroundInverse.onclick = () => {
-  background = 'inverse'
+  background = Colors.inverse
   backgroundButtons.forEach(button => {
     button.classList.remove('active')
   })
@@ -284,7 +263,7 @@ reset.onclick = () => {
 }
 
 randomizeButton.addEventListener('click', () => {
-  randomize(state)
+  randomize()
   reInit()
 })
 
@@ -365,18 +344,7 @@ function animate() {
   }
   hue += colorRate
 
-  if (background === 'light') {
-    ctxbg.fillStyle = 'white'
-  }
-  if (background === 'dark') {
-    ctxbg.fillStyle = 'black'
-  }
-  if (background === 'match') {
-    ctxbg.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`
-  }
-  if (background === 'inverse') {
-    ctxbg.fillStyle = `hsl(${360 - hue}, ${100 - saturation}%, ${100 - lightness}%)`
-  }
+  ctxbg.fillStyle = determineColor(background, hue, saturation, lightness)
 
   ctxbg.fillRect(0, 0, canvas.width, canvas.height)
 

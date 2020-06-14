@@ -5,7 +5,8 @@ export enum Colors {
   inverse
 }
 
-export function scaleForRetina(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+// Scales a canvas with context to look better on retina
+function scaleForRetina(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
   canvas.width = window.innerWidth * devicePixelRatio
   canvas.style.width = window.innerWidth + 'px'
 
@@ -15,11 +16,18 @@ export function scaleForRetina(canvas: HTMLCanvasElement, ctx: CanvasRenderingCo
   ctx.scale(devicePixelRatio, devicePixelRatio)
 }
 
+export function scaleCanvases(canvases) {
+  canvases.forEach(({ canvas, ctx }) => {
+    document.body.append(canvas)
+    scaleForRetina(canvas, ctx)
+  })
+}
+
 export function determineColor(
   selection: Colors,
-  hue = 0,
-  saturation = 100,
-  lightness = 50,
+  hue: number,
+  saturation: number,
+  lightness: number,
   opacity = 1) {
   if (selection === Colors.light) {
     return `hsl(0, 0%, 100%, ${opacity})`

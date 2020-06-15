@@ -41,7 +41,10 @@ const state = {
 
   growshrink: false,
   shrinkage: 0.2,
-  growage: 0.2
+  growage: 0.2,
+
+  jiggling: false,
+  jigglage: 4
 }
 
 /* Destructure the values from state for convenient access */
@@ -63,7 +66,9 @@ let {
   stroke,
   growshrink,
   shrinkage,
-  growage } = state
+  growage,
+  jiggling,
+  jigglage } = state
 
 /* Setup */
 
@@ -96,6 +101,8 @@ const randomizeButton = document.getElementById('randomize') as HTMLButtonElemen
 const growshrinkButton = document.getElementById('growshrink') as HTMLButtonElement
 const shrinkageControl = document.getElementById('shrinkage') as HTMLInputElement
 const growageControl = document.getElementById('growage') as HTMLInputElement
+const jiggleToggle = document.getElementById('jiggle-toggle') as HTMLButtonElement
+const jigglageControl = document.getElementById('jigglage-control') as HTMLInputElement
 
 
 const backgroundButtons = [backgroundLight, backgroundDark, backgroundMatch, backgroundInverse]
@@ -143,10 +150,18 @@ growshrinkButton.addEventListener('click', () => {
   }
 })
 
+jiggleToggle.addEventListener('click', () => {
+  jiggling = !jiggling
+  if (jiggling) {
+    jiggleToggle.innerHTML = 'Jiggling'
+  } else {
+    jiggleToggle.innerHTML = 'Not Jiggling'
+  }
+})
+
 shrinkageControl.addEventListener(
   'input',
   (event: Event) => {
-    console.log({ shrinkage })
     const element = event.currentTarget as HTMLInputElement
     shrinkage = Number(element.value)
   })
@@ -154,10 +169,15 @@ shrinkageControl.addEventListener(
 growageControl.addEventListener(
   'input',
   (event: Event) => {
-    console.log({ growage })
-
     const element = event.currentTarget as HTMLInputElement
     growage = Number(element.value)
+  })
+
+jigglageControl.addEventListener(
+  'input',
+  (event: Event) => {
+    const element = event.currentTarget as HTMLInputElement
+    jigglage = Number(element.value)
   })
 
 colorRateControl.addEventListener(
@@ -330,9 +350,6 @@ class Particle {
       this.speedY = unscaledSpeedY * this.particleSpeedScale
     }
 
-    this.x += this.speedX
-    this.y += this.speedY
-
     if (this.x + this.radius > canvas.width
       || this.x - this.radius < 0) {
       this.speedX = -this.speedX
@@ -342,6 +359,16 @@ class Particle {
       || this.y - this.radius < 0) {
       this.speedY = -this.speedY
     }
+
+    this.x += this.speedX
+    this.y += this.speedY
+
+    if (jiggling) {
+      const jiggle = (Math.random() - 0.5) * jigglage
+      this.x += jiggle
+      this.y += jiggle
+    }
+
     this.draw()
   }
 }

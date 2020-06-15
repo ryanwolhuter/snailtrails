@@ -33,14 +33,16 @@ const state = {
     background: Colors.match,
     growshrink: false,
     shrinkage: 0.2,
-    growage: 0.2
+    growage: 0.2,
+    jiggling: false,
+    jigglage: 4
 };
 /* Destructure the values from state for convenient access */
 let { 
 // particle controls
 particleCount, particleSpeed, speedScale, particleSize, sizeScale, particleFill, 
 // color controls
-colorRate, hue, saturation, lightness, background, stroke, growshrink, shrinkage, growage } = state;
+colorRate, hue, saturation, lightness, background, stroke, growshrink, shrinkage, growage, jiggling, jigglage } = state;
 /* Setup */
 const canvasbg = document.getElementById('canvasbg');
 const ctxbg = canvasbg.getContext('2d');
@@ -68,6 +70,8 @@ const randomizeButton = document.getElementById('randomize');
 const growshrinkButton = document.getElementById('growshrink');
 const shrinkageControl = document.getElementById('shrinkage');
 const growageControl = document.getElementById('growage');
+const jiggleToggle = document.getElementById('jiggle-toggle');
+const jigglageControl = document.getElementById('jigglage-control');
 const backgroundButtons = [backgroundLight, backgroundDark, backgroundMatch, backgroundInverse];
 const strokeButtons = [strokeColorLight, strokeColorDark, strokeColorMatch, strokeColorInverse];
 const canvases = [
@@ -104,15 +108,26 @@ growshrinkButton.addEventListener('click', () => {
         growshrinkButton.innerHTML = 'Not Growing + Shrinking';
     }
 });
+jiggleToggle.addEventListener('click', () => {
+    jiggling = !jiggling;
+    if (jiggling) {
+        jiggleToggle.innerHTML = 'Jiggling';
+    }
+    else {
+        jiggleToggle.innerHTML = 'Not Jiggling';
+    }
+});
 shrinkageControl.addEventListener('input', (event) => {
-    console.log({ shrinkage });
     const element = event.currentTarget;
     shrinkage = Number(element.value);
 });
 growageControl.addEventListener('input', (event) => {
-    console.log({ growage });
     const element = event.currentTarget;
     growage = Number(element.value);
+});
+jigglageControl.addEventListener('input', (event) => {
+    const element = event.currentTarget;
+    jigglage = Number(element.value);
 });
 colorRateControl.addEventListener('input', (event) => {
     const element = event.currentTarget;
@@ -253,8 +268,6 @@ class Particle {
             this.speedX = unscaledSpeedX * this.particleSpeedScale;
             this.speedY = unscaledSpeedY * this.particleSpeedScale;
         }
-        this.x += this.speedX;
-        this.y += this.speedY;
         if (this.x + this.radius > canvas.width
             || this.x - this.radius < 0) {
             this.speedX = -this.speedX;
@@ -262,6 +275,13 @@ class Particle {
         if (this.y + this.radius > canvas.height
             || this.y - this.radius < 0) {
             this.speedY = -this.speedY;
+        }
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (jiggling) {
+            const jiggle = (Math.random() - 0.5) * jigglage;
+            this.x += jiggle;
+            this.y += jiggle;
         }
         this.draw();
     }

@@ -30,14 +30,17 @@ const state = {
     lightness: 20,
     colorRate: 1,
     stroke: Colors.inverse,
-    background: Colors.match
+    background: Colors.match,
+    growshrink: false,
+    shrinkage: 0.2,
+    growage: 0.2
 };
 /* Destructure the values from state for convenient access */
 let { 
 // particle controls
 particleCount, particleSpeed, speedScale, particleSize, sizeScale, particleFill, 
 // color controls
-colorRate, hue, saturation, lightness, background, stroke } = state;
+colorRate, hue, saturation, lightness, background, stroke, growshrink, shrinkage, growage } = state;
 /* Setup */
 const canvasbg = document.getElementById('canvasbg');
 const ctxbg = canvasbg.getContext('2d');
@@ -62,6 +65,7 @@ const strokeColorMatch = document.getElementById('stroke-color-match');
 const strokeColorInverse = document.getElementById('stroke-color-inverse');
 const reset = document.getElementById('reset');
 const randomizeButton = document.getElementById('randomize');
+const growshrinkButton = document.getElementById('growshrink');
 const backgroundButtons = [backgroundLight, backgroundDark, backgroundMatch, backgroundInverse];
 const strokeButtons = [strokeColorLight, strokeColorDark, strokeColorMatch, strokeColorInverse];
 const canvases = [
@@ -88,6 +92,15 @@ reset.onclick = () => {
 randomizeButton.addEventListener('click', () => {
     randomize();
     reInit();
+});
+growshrinkButton.addEventListener('click', () => {
+    growshrink = !growshrink;
+    if (growshrink) {
+        growshrinkButton.innerHTML = 'Growing + Shrinking';
+    }
+    else {
+        growshrinkButton.innerHTML = 'Not Growing + Shrinking';
+    }
 });
 colorRateControl.addEventListener('input', (event) => {
     const element = event.currentTarget;
@@ -178,7 +191,7 @@ function handleSizeControl(event) {
     sizeScale = Number(element.value);
 }
 class Particle {
-    constructor(x = Math.random() * canvas.width, y = Math.random() * canvas.height, speedX = Math.random() * particleSpeed * speedScale, speedY = Math.random() * particleSpeed * speedScale, radius = Math.random() * particleSize * sizeScale, particleSizeScale = sizeScale, particleSpeedScale = speedScale) {
+    constructor(x = Math.random() * canvas.width, y = Math.random() * canvas.height, speedX = Math.random() * particleSpeed * speedScale, speedY = Math.random() * particleSpeed * speedScale, radius = Math.random() * particleSize * sizeScale, particleSizeScale = sizeScale, particleSpeedScale = speedScale, shrinking = true) {
         this.x = x;
         this.y = y;
         this.speedX = speedX;
@@ -186,6 +199,7 @@ class Particle {
         this.radius = radius;
         this.particleSizeScale = particleSizeScale;
         this.particleSpeedScale = particleSpeedScale;
+        this.shrinking = shrinking;
     }
     draw() {
         ctx.beginPath();
@@ -201,6 +215,23 @@ class Particle {
             const unscaled = Number((this.radius / this.particleSizeScale).toPrecision(2));
             this.particleSizeScale = sizeScale;
             this.radius = unscaled * this.particleSizeScale;
+        }
+        if (growshrink) {
+            if (this.shrinking) {
+                const change = this.radius - shrinkage;
+                if (change >= 5) {
+                    this.radius -= shrinkage;
+                }
+                else {
+                    this.shrinking = false;
+                }
+            }
+            else {
+                if (this.radius >= 100) {
+                    this.shrinking = true;
+                }
+                this.radius += growage;
+            }
         }
         const speedScaleChange = Number((speedScale - this.particleSpeedScale).toPrecision(2));
         if (speedScaleChange !== 0) {

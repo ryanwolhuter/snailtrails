@@ -37,7 +37,11 @@ const state = {
   lightness: 20,
   colorRate: 1,
   stroke: Colors.inverse,
-  background: Colors.match
+  background: Colors.match,
+
+  growshrink: false,
+  shrinkage: 0.2,
+  growage: 0.2
 }
 
 /* Destructure the values from state for convenient access */
@@ -56,7 +60,10 @@ let {
   saturation,
   lightness,
   background,
-  stroke } = state
+  stroke,
+  growshrink,
+  shrinkage,
+  growage } = state
 
 /* Setup */
 
@@ -86,6 +93,7 @@ const strokeColorMatch = document.getElementById('stroke-color-match') as HTMLBu
 const strokeColorInverse = document.getElementById('stroke-color-inverse') as HTMLButtonElement
 const reset = document.getElementById('reset') as HTMLButtonElement
 const randomizeButton = document.getElementById('randomize') as HTMLButtonElement
+const growshrinkButton = document.getElementById('growshrink') as HTMLButtonElement
 
 const backgroundButtons = [backgroundLight, backgroundDark, backgroundMatch, backgroundInverse]
 
@@ -121,6 +129,15 @@ reset.onclick = () => {
 randomizeButton.addEventListener('click', () => {
   randomize()
   reInit()
+})
+
+growshrinkButton.addEventListener('click', () => {
+  growshrink = !growshrink
+  if (growshrink) {
+    growshrinkButton.innerHTML = 'Growing + Shrinking'
+  } else {
+    growshrinkButton.innerHTML = 'Not Growing + Shrinking'
+  }
 })
 
 colorRateControl.addEventListener(
@@ -243,7 +260,8 @@ class Particle {
     public speedY = Math.random() * particleSpeed * speedScale,
     public radius = Math.random() * particleSize * sizeScale,
     public particleSizeScale = sizeScale,
-    public particleSpeedScale = speedScale) {
+    public particleSpeedScale = speedScale,
+    public shrinking = true) {
   }
 
   draw() {
@@ -262,6 +280,22 @@ class Particle {
       const unscaled = Number((this.radius / this.particleSizeScale).toPrecision(2))
       this.particleSizeScale = sizeScale
       this.radius = unscaled * this.particleSizeScale
+    }
+
+    if (growshrink) {
+      if (this.shrinking) {
+        const change = this.radius - shrinkage
+        if (change >= 5) {
+          this.radius -= shrinkage
+        } else {
+          this.shrinking = false
+        }
+      } else {
+        if (this.radius >= 100) {
+          this.shrinking = true
+        }
+        this.radius += growage
+      }
     }
 
     const speedScaleChange = Number((speedScale - this.particleSpeedScale).toPrecision(2))
@@ -361,5 +395,5 @@ function randomize() {
   colorRateControl.value = colorRate.toString()
   saturationControl.value = saturation.toString()
   lightnessControl.value = lightness.toString()
-  
+
 }

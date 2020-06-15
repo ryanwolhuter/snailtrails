@@ -35,14 +35,16 @@ const state = {
     shrinkage: 0.2,
     growage: 0.2,
     jiggling: false,
-    jigglage: 4
+    jigglage: 4,
+    accelerating: false,
+    acceleration: 1.001
 };
 /* Destructure the values from state for convenient access */
 let { 
 // particle controls
 particleCount, particleSpeed, speedScale, particleSize, sizeScale, particleFill, 
 // color controls
-colorRate, hue, saturation, lightness, background, stroke, growshrink, shrinkage, growage, jiggling, jigglage } = state;
+colorRate, hue, saturation, lightness, background, stroke, growshrink, shrinkage, growage, jiggling, jigglage, acceleration, accelerating } = state;
 /* Setup */
 const canvasbg = document.getElementById('canvasbg');
 const ctxbg = canvasbg.getContext('2d');
@@ -282,6 +284,10 @@ class Particle {
         }
         this.x += this.speedX;
         this.y += this.speedY;
+        if (accelerating) {
+            this.speedX *= acceleration;
+            this.speedY *= acceleration;
+        }
         this.draw();
     }
 }

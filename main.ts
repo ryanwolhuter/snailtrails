@@ -44,7 +44,10 @@ const state = {
   growage: 0.2,
 
   jiggling: false,
-  jigglage: 4
+  jigglage: 4,
+
+  accelerating: false,
+  acceleration: 1.001
 }
 
 /* Destructure the values from state for convenient access */
@@ -68,7 +71,9 @@ let {
   shrinkage,
   growage,
   jiggling,
-  jigglage } = state
+  jigglage,
+  acceleration,
+  accelerating } = state
 
 /* Setup */
 
@@ -368,7 +373,12 @@ class Particle {
     this.x += this.speedX
     this.y += this.speedY
 
-    this.draw()
+    if (accelerating) {
+      this.speedX *= acceleration
+      this.speedY *= acceleration
+    }
+
+      this.draw()
   }
 }
 

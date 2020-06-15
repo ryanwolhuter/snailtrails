@@ -93,11 +93,6 @@ const canvases = [
     { canvas: canvasbg, ctx: ctxbg },
     { canvas, ctx }
 ];
-window.onload = () => {
-    scaleCanvases(canvases);
-    init();
-    animate();
-};
 window.onresize = () => {
     scaleCanvases(canvases);
 };
@@ -284,3 +279,6 @@ function reInit() {
     particles.length = 0;
     init();
 }
+scaleCanvases(canvases);
+init();
+animate();

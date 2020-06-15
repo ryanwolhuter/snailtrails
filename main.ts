@@ -123,12 +123,6 @@ const canvases = [
   { canvas, ctx }
 ]
 
-window.onload = () => {
-  scaleCanvases(canvases)
-  init()
-  animate()
-}
-
 window.onresize = () => {
   scaleCanvases(canvases)
 }
@@ -359,3 +353,7 @@ function reInit() {
   particles.length = 0
   init()
 }
+
+scaleCanvases(canvases)
+init()
+animate()

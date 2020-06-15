@@ -94,6 +94,9 @@ const strokeColorInverse = document.getElementById('stroke-color-inverse') as HT
 const reset = document.getElementById('reset') as HTMLButtonElement
 const randomizeButton = document.getElementById('randomize') as HTMLButtonElement
 const growshrinkButton = document.getElementById('growshrink') as HTMLButtonElement
+const shrinkageControl = document.getElementById('shrinkage') as HTMLInputElement
+const growageControl = document.getElementById('growage') as HTMLInputElement
+
 
 const backgroundButtons = [backgroundLight, backgroundDark, backgroundMatch, backgroundInverse]
 
@@ -139,6 +142,23 @@ growshrinkButton.addEventListener('click', () => {
     growshrinkButton.innerHTML = 'Not Growing + Shrinking'
   }
 })
+
+shrinkageControl.addEventListener(
+  'input',
+  (event: Event) => {
+    console.log({ shrinkage })
+    const element = event.currentTarget as HTMLInputElement
+    shrinkage = Number(element.value)
+  })
+
+growageControl.addEventListener(
+  'input',
+  (event: Event) => {
+    console.log({ growage })
+
+    const element = event.currentTarget as HTMLInputElement
+    growage = Number(element.value)
+  })
 
 colorRateControl.addEventListener(
   'input',

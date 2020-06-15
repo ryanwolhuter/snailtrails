@@ -66,6 +66,8 @@ const strokeColorInverse = document.getElementById('stroke-color-inverse');
 const reset = document.getElementById('reset');
 const randomizeButton = document.getElementById('randomize');
 const growshrinkButton = document.getElementById('growshrink');
+const shrinkageControl = document.getElementById('shrinkage');
+const growageControl = document.getElementById('growage');
 const backgroundButtons = [backgroundLight, backgroundDark, backgroundMatch, backgroundInverse];
 const strokeButtons = [strokeColorLight, strokeColorDark, strokeColorMatch, strokeColorInverse];
 const canvases = [
@@ -101,6 +103,16 @@ growshrinkButton.addEventListener('click', () => {
     else {
         growshrinkButton.innerHTML = 'Not Growing + Shrinking';
     }
+});
+shrinkageControl.addEventListener('input', (event) => {
+    console.log({ shrinkage });
+    const element = event.currentTarget;
+    shrinkage = Number(element.value);
+});
+growageControl.addEventListener('input', (event) => {
+    console.log({ growage });
+    const element = event.currentTarget;
+    growage = Number(element.value);
 });
 colorRateControl.addEventListener('input', (event) => {
     const element = event.currentTarget;

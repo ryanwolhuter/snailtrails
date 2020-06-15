@@ -84,36 +84,35 @@ function randomize() {
 
 /* Setup */
 
-const canvasbg = <HTMLCanvasElement>document.getElementById('canvasbg')
-const ctxbg = canvasbg.getContext('2d')
+const canvasbg = document.getElementById('canvasbg') as HTMLCanvasElement
+const ctxbg = canvasbg.getContext('2d') as CanvasRenderingContext2D
 
-const canvas = <HTMLCanvasElement>document.getElementById('canvas')
-const ctx = canvas.getContext('2d')
+const canvas = document.getElementById('canvas') as HTMLCanvasElement
+const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 
-const controls = document.getElementById('controls')
-const closeButton = document.getElementById('close')
-const showControlsButton = document.getElementById('show-controls')
+const controls = document.getElementById('controls') as HTMLDivElement
+const closeButton = document.getElementById('close') as HTMLButtonElement
+const showControlsButton = document.getElementById('show-controls') as HTMLButtonElement
 
-const countControl = document.getElementById('count')
-countControl!.oninput = handleCountControl
-const speedControl = document.getElementById('speed')
-
+const countControl = document.getElementById('count') as HTMLInputElement
+countControl.oninput = handleCountControl
+const speedControl = document.getElementById('speed') as HTMLInputElement
 speedControl.oninput = handleSpeedControl
-const sizeControl = document.getElementById('size')
+const sizeControl = document.getElementById('size') as HTMLInputElement
 sizeControl.oninput = handleSizeControl
-const colorRateControl = document.getElementById('color-rate')
-const saturationControl = document.getElementById('saturation')
-const lightnessControl = document.getElementById('lightness')
-const backgroundLight = document.getElementById('background-light')
-const backgroundDark = document.getElementById('background-dark')
-const backgroundMatch = document.getElementById('background-match')
-const backgroundInverse = document.getElementById('background-inverse')
-const strokeColorLight = document.getElementById('stroke-color-light')
-const strokeColorDark = document.getElementById('stroke-color-dark')
-const strokeColorMatch = document.getElementById('stroke-color-match')
-const strokeColorInverse = document.getElementById('stroke-color-inverse')
-const reset = document.getElementById('reset')
-const randomizeButton = document.getElementById('randomize')
+const colorRateControl = document.getElementById('color-rate') as HTMLInputElement
+const saturationControl = document.getElementById('saturation') as HTMLInputElement
+const lightnessControl = document.getElementById('lightness') as HTMLInputElement
+const backgroundLight = document.getElementById('background-light') as HTMLButtonElement
+const backgroundDark = document.getElementById('background-dark') as HTMLButtonElement
+const backgroundMatch = document.getElementById('background-match') as HTMLButtonElement
+const backgroundInverse = document.getElementById('background-inverse') as HTMLButtonElement
+const strokeColorLight = document.getElementById('stroke-color-light') as HTMLButtonElement
+const strokeColorDark = document.getElementById('stroke-color-dark') as HTMLButtonElement
+const strokeColorMatch = document.getElementById('stroke-color-match') as HTMLButtonElement
+const strokeColorInverse = document.getElementById('stroke-color-inverse') as HTMLButtonElement
+const reset = document.getElementById('reset') as HTMLButtonElement
+const randomizeButton = document.getElementById('randomize') as HTMLButtonElement
 
 const backgroundButtons = [backgroundLight, backgroundDark, backgroundMatch, backgroundInverse]
 
@@ -134,14 +133,14 @@ window.onresize = () => {
   scaleCanvases(canvases)
 }
 
-closeButton!.onclick = () => {
-  showControlsButton!.style.display = 'grid'
-  controls!.style.display = 'none'
+closeButton.onclick = () => {
+  showControlsButton.style.display = 'grid'
+  controls.style.display = 'none'
 }
 
-showControlsButton!.onclick = () => {
-  showControlsButton!.style.display = 'none'
-  controls!.style.display = 'grid'
+showControlsButton.onclick = () => {
+  showControlsButton.style.display = 'none'
+  controls.style.display = 'grid'
 }
 
 /* Event handlers */
@@ -297,12 +296,12 @@ class Particle {
   }
 
   draw() {
-    ctx!.beginPath()
-    ctx!.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
-    ctx!.fillStyle = determineColor(particleFill, hue, saturation, lightness)
-    ctx!.fill()
-    ctx!.strokeStyle = determineColor(stroke, hue, saturation, lightness)
-    ctx!.stroke()
+    ctx.beginPath()
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
+    ctx.fillStyle = determineColor(particleFill, hue, saturation, lightness)
+    ctx.fill()
+    ctx.strokeStyle = determineColor(stroke, hue, saturation, lightness)
+    ctx.stroke()
   }
 
   update() {
@@ -356,7 +355,7 @@ function animate() {
 }
 
 function reInit() {
-  ctx!.clearRect(0, 0, canvas.width, canvas.height)
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
   particles.length = 0
   init()
 }

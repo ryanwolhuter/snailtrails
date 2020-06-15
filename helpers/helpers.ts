@@ -7,13 +7,13 @@ export enum Colors {
 
 // Scales a canvas with context to look better on retina
 function scaleForRetina(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+  ctx.scale(devicePixelRatio, devicePixelRatio)
+
   canvas.width = window.innerWidth * devicePixelRatio
   canvas.style.width = window.innerWidth + 'px'
 
   canvas.height = window.innerHeight * devicePixelRatio
   canvas.style.height = window.innerHeight + 'px'
-
-  ctx.scale(devicePixelRatio, devicePixelRatio)
 }
 
 interface CanvasWithContext {

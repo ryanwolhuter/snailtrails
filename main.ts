@@ -15,7 +15,8 @@ const state = {
   /* Particles */
 
   particleCount: 31,
-  particleSpeed: 1,
+  particleSpeed: 0.05,
+  speedScale: 15,
   particleSize: 10,
   particleFill: Colors.match,
   sizeScale: 10,
@@ -45,6 +46,7 @@ let {
   // particle controls
   particleCount,
   particleSpeed,
+  speedScale,
   particleSize,
   sizeScale,
   particleFill,
@@ -252,19 +254,7 @@ function handleCountControl(event: Event) {
 
 function handleSpeedControl(event: Event) {
   const element = event.currentTarget as HTMLInputElement
-  const newSpeed = Number(element.value)
-  particleSpeed = newSpeed
-  updateParticleSpeeds(particles)
-}
-
-function updateParticleSpeeds(particles: Particle[]) {
-  particles.forEach(particle => {
-    const positiveX = particle.speedX >= 0
-    const positiveY = particle.speedY >= 0
-    particle.speedX = positiveX ? particleSpeed : -particleSpeed
-    particle.speedY = positiveY ? particleSpeed : -particleSpeed
-    particle.update()
-  })
+  speedScale = Number(element.value)
 }
 
 function handleSizeControl(event: Event) {
@@ -276,10 +266,11 @@ class Particle {
   constructor(
     public x = Math.random() * canvas.width,
     public y = Math.random() * canvas.height,
-    public speedX = Math.random() * particleSpeed,
-    public speedY = Math.random() * particleSpeed,
-    public radius = (Math.random() * particleSize) * sizeScale,
-    public particleSizeScale = sizeScale) {
+    public speedX = Math.random() * particleSpeed * speedScale,
+    public speedY = Math.random() * particleSpeed * speedScale,
+    public radius = Math.random() * particleSize * sizeScale,
+    public particleSizeScale = sizeScale,
+    public particleSpeedScale = speedScale) {
   }
 
   draw() {
@@ -298,6 +289,18 @@ class Particle {
       const unscaled = Number((this.radius / this.particleSizeScale).toPrecision(2))
       this.particleSizeScale = sizeScale
       this.radius = unscaled * this.particleSizeScale
+    }
+
+    const speedScaleChange = Number((speedScale - this.particleSpeedScale).toPrecision(2))
+
+    if (speedScaleChange !== 0) {
+      const unscaledSpeedX = Number((this.speedX / this.particleSpeedScale).toPrecision(2))
+      const unscaledSpeedY = Number((this.speedX / this.particleSpeedScale).toPrecision(2))
+
+      this.particleSpeedScale = speedScale
+
+      this.speedX = unscaledSpeedX * this.particleSpeedScale
+      this.speedY = unscaledSpeedY * this.particleSpeedScale
     }
 
     this.x += this.speedX

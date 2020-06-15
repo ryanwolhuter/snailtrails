@@ -58,33 +58,6 @@ let {
   background,
   stroke } = state
 
-function randomize() {
-  sizeScale = Math.ceil(Math.random() * 15)
-  speedScale = Math.ceil(Math.random() * 256)
-
-  particles.forEach((particle: Particle) => {
-    particle.x = Math.random() * canvas.width
-    particle.y = Math.random() * canvas.height
-    particle.radius = Math.random() * particleSize * sizeScale
-    particle.speedX = Math.random() * particleSpeed * speedScale
-    particle.speedY = Math.random() * particleSpeed * speedScale
-  })
-
-  const options = [
-    Colors.light,
-    Colors.dark,
-    Colors.match,
-    Colors.inverse
-  ]
-
-  background = options[Math.ceil(Math.random() * 4)]
-  stroke = options[Math.ceil(Math.random() * 4)]
-  hue = Math.ceil(Math.random() * 360)
-  saturation = Math.ceil(Math.random() * 100)
-  lightness = Math.ceil(Math.random() * 100)
-  colorRate = (Math.random() * 100) / (Math.random() * 100)
-}
-
 /* Setup */
 
 const canvasbg = document.getElementById('canvasbg') as HTMLCanvasElement
@@ -352,3 +325,34 @@ function reInit() {
 scaleCanvases(canvases)
 init()
 animate()
+
+function randomize() {
+  sizeScale = Math.ceil(Math.random() * 15)
+  speedScale = Math.ceil(Math.random() * 256)
+
+  particleCount = Math.ceil(Math.random() * 50)
+
+  reInit()
+
+  particles.forEach((particle: Particle) => {
+    particle.x = Math.random() * canvas.width
+    particle.y = Math.random() * canvas.height
+    particle.radius = Math.random() * particleSize * sizeScale
+    particle.speedX = Math.random() * particleSpeed * speedScale
+    particle.speedY = Math.random() * particleSpeed * speedScale
+  })
+
+  const options = [
+    Colors.light,
+    Colors.dark,
+    Colors.match,
+    Colors.inverse
+  ]
+
+  background = options[Math.ceil(Math.random() * 4)]
+  stroke = options[Math.ceil(Math.random() * 4)]
+  hue = Math.ceil(Math.random() * 360)
+  saturation = Math.ceil(Math.random() * 100)
+  lightness = Math.ceil(Math.random() * 100)
+  colorRate = (Math.random() * 100) / (Math.random() * 100)
+}

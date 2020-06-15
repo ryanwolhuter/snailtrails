@@ -11,9 +11,9 @@ const state = {
     /* Particles */
     particleCount: 31,
     particleSpeed: 1,
-    particleSize: 50,
+    particleSize: 10,
     particleFill: Colors.match,
-    sizeScale: 0,
+    sizeScale: 10,
     /* Colors
      *
      * The colors in the app are controlled with hsl values.
@@ -34,7 +34,7 @@ const state = {
 /* Destructure the values from state for convenient access */
 let { 
 // particle controls
-particleCount, particleSpeed, particleSize, particleFill, 
+particleCount, particleSpeed, particleSize, sizeScale, particleFill, 
 // color controls
 colorRate, hue, saturation, lightness, background, stroke } = state;
 function randomize() {
@@ -69,11 +69,8 @@ const controls = document.getElementById('controls');
 const closeButton = document.getElementById('close');
 const showControlsButton = document.getElementById('show-controls');
 const countControl = document.getElementById('count');
-countControl.oninput = handleCountControl;
 const speedControl = document.getElementById('speed');
-speedControl.oninput = handleSpeedControl;
 const sizeControl = document.getElementById('size');
-sizeControl.oninput = handleSizeControl;
 const colorRateControl = document.getElementById('color-rate');
 const saturationControl = document.getElementById('saturation');
 const lightnessControl = document.getElementById('lightness');
@@ -93,6 +90,9 @@ const canvases = [
     { canvas: canvasbg, ctx: ctxbg },
     { canvas, ctx }
 ];
+countControl.oninput = handleCountControl;
+speedControl.oninput = handleSpeedControl;
+sizeControl.oninput = handleSizeControl;
 window.onresize = () => {
     scaleCanvases(canvases);
 };
@@ -104,44 +104,13 @@ showControlsButton.onclick = () => {
     showControlsButton.style.display = 'none';
     controls.style.display = 'grid';
 };
-/* Event handlers */
-function handleCountControl(event) {
-    const element = event.currentTarget;
-    const newCount = Number(element.value);
-    if (newCount > particleCount) {
-        particles.push(new Particle());
-    }
-    if (newCount < particleCount) {
-        particles.splice(0, particleCount - newCount);
-    }
-    particleCount = newCount;
-}
-function handleSpeedControl(event) {
-    const element = event.currentTarget;
-    const newSpeed = Number(element.value);
-    particleSpeed = newSpeed;
-    updateParticleSpeeds(particles);
-}
-function updateParticleSpeeds(particles) {
-    particles.forEach(particle => {
-        const positiveX = particle.speedX >= 0;
-        const positiveY = particle.speedY >= 0;
-        particle.speedX = positiveX ? particleSpeed : -particleSpeed;
-        particle.speedY = positiveY ? particleSpeed : -particleSpeed;
-        particle.update();
-    });
-}
-function handleSizeControl(event) {
-    const element = event.currentTarget;
-    const newSize = Number(element.value);
-    const change = newSize - particleSize;
-    updateParticleSizes(particles, change);
-}
-function updateParticleSizes(particles, change) {
-    particles.forEach((particle) => {
-        particle.updateSize(change);
-    });
-}
+reset.onclick = () => {
+    reInit();
+};
+randomizeButton.addEventListener('click', () => {
+    randomize();
+    reInit();
+});
 colorRateControl.addEventListener('input', (event) => {
     const element = event.currentTarget;
     colorRate = Number(element.value);
@@ -210,20 +179,45 @@ strokeColorInverse.onclick = () => {
     });
     strokeColorInverse.classList.add('active');
 };
-reset.onclick = () => {
-    reInit();
-};
-randomizeButton.addEventListener('click', () => {
-    randomize();
-    reInit();
-});
+/* Event handlers */
+function handleCountControl(event) {
+    const element = event.currentTarget;
+    const newCount = Number(element.value);
+    if (newCount > particleCount) {
+        particles.push(new Particle());
+    }
+    if (newCount < particleCount) {
+        particles.splice(0, particleCount - newCount);
+    }
+    particleCount = newCount;
+}
+function handleSpeedControl(event) {
+    const element = event.currentTarget;
+    const newSpeed = Number(element.value);
+    particleSpeed = newSpeed;
+    updateParticleSpeeds(particles);
+}
+function updateParticleSpeeds(particles) {
+    particles.forEach(particle => {
+        const positiveX = particle.speedX >= 0;
+        const positiveY = particle.speedY >= 0;
+        particle.speedX = positiveX ? particleSpeed : -particleSpeed;
+        particle.speedY = positiveY ? particleSpeed : -particleSpeed;
+        particle.update();
+    });
+}
+function handleSizeControl(event) {
+    const element = event.currentTarget;
+    sizeScale = Number(element.value);
+}
 class Particle {
-    constructor(x = Math.random() * canvas.width, y = Math.random() * canvas.height, radius = Math.random() * particleSize, speedX = Math.random() * particleSpeed, speedY = Math.random() * particleSpeed) {
+    constructor(x = Math.random() * canvas.width, y = Math.random() * canvas.height, speedX = Math.random() * particleSpeed, speedY = Math.random() * particleSpeed, radius = (Math.random() * particleSize) * sizeScale, particleSizeScale = sizeScale) {
         this.x = x;
         this.y = y;
-        this.radius = radius;
         this.speedX = speedX;
         this.speedY = speedY;
+        this.radius = radius;
+        this.particleSizeScale = particleSizeScale;
     }
     draw() {
         ctx.beginPath();
@@ -234,6 +228,12 @@ class Particle {
         ctx.stroke();
     }
     update() {
+        const sizeScaleChange = Number((sizeScale - this.particleSizeScale).toPrecision(2));
+        if (sizeScaleChange !== 0) {
+            const unscaled = Number((this.radius / this.particleSizeScale).toPrecision(2));
+            this.particleSizeScale = sizeScale;
+            this.radius = unscaled * this.particleSizeScale;
+        }
         this.x += this.speedX;
         this.y += this.speedY;
         if (this.x + this.radius > canvas.width
@@ -245,15 +245,6 @@ class Particle {
             this.speedY = -this.speedY;
         }
         this.draw();
-    }
-    updateSize(change) {
-        let changedRadius = this.radius + change;
-        if ((changedRadius > 0)) {
-            this.radius += change;
-        }
-        else {
-            this.radius = 1;
-        }
     }
 }
 function init() {

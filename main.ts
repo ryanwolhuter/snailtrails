@@ -16,9 +16,9 @@ const state = {
 
   particleCount: 31,
   particleSpeed: 1,
-  particleSize: 50,
+  particleSize: 10,
   particleFill: Colors.match,
-  sizeScale: 0,
+  sizeScale: 10,
 
   /* Colors
    *
@@ -46,6 +46,7 @@ let {
   particleCount,
   particleSpeed,
   particleSize,
+  sizeScale,
   particleFill,
   // color controls
   colorRate,
@@ -95,11 +96,8 @@ const closeButton = document.getElementById('close') as HTMLButtonElement
 const showControlsButton = document.getElementById('show-controls') as HTMLButtonElement
 
 const countControl = document.getElementById('count') as HTMLInputElement
-countControl.oninput = handleCountControl
 const speedControl = document.getElementById('speed') as HTMLInputElement
-speedControl.oninput = handleSpeedControl
 const sizeControl = document.getElementById('size') as HTMLInputElement
-sizeControl.oninput = handleSizeControl
 const colorRateControl = document.getElementById('color-rate') as HTMLInputElement
 const saturationControl = document.getElementById('saturation') as HTMLInputElement
 const lightnessControl = document.getElementById('lightness') as HTMLInputElement
@@ -123,6 +121,10 @@ const canvases = [
   { canvas, ctx }
 ]
 
+countControl.oninput = handleCountControl
+speedControl.oninput = handleSpeedControl
+sizeControl.oninput = handleSizeControl
+
 window.onresize = () => {
   scaleCanvases(canvases)
 }
@@ -137,52 +139,14 @@ showControlsButton.onclick = () => {
   controls.style.display = 'grid'
 }
 
-/* Event handlers */
-
-function handleCountControl(event: Event) {
-  const element = event.currentTarget as HTMLInputElement
-  const newCount = Number(element.value)
-  if (newCount > particleCount) {
-    particles.push(new Particle())
-  }
-
-  if (newCount < particleCount) {
-    particles.splice(0, particleCount - newCount)
-  }
-
-  particleCount = newCount
+reset.onclick = () => {
+  reInit()
 }
 
-function handleSpeedControl(event: Event) {
-  const element = event.currentTarget as HTMLInputElement
-  const newSpeed = Number(element.value)
-  particleSpeed = newSpeed
-  updateParticleSpeeds(particles)
-}
-
-function updateParticleSpeeds(particles: Particle[]) {
-  particles.forEach(particle => {
-    const positiveX = particle.speedX >= 0
-    const positiveY = particle.speedY >= 0
-    particle.speedX = positiveX ? particleSpeed : -particleSpeed
-    particle.speedY = positiveY ? particleSpeed : -particleSpeed
-    particle.update()
-  })
-}
-
-function handleSizeControl(event: Event) {
-  const element = event.currentTarget as HTMLInputElement
-  const newSize = Number(element.value)
-  const change = newSize - particleSize
-  updateParticleSizes(particles, change)
-}
-
-function updateParticleSizes(particles: Particle[], change: number) {
-
-  particles.forEach((particle: Particle) => {
-    particle.updateSize(change)
-  })
-}
+randomizeButton.addEventListener('click', () => {
+  randomize()
+  reInit()
+})
 
 colorRateControl.addEventListener(
   'input',
@@ -270,23 +234,52 @@ strokeColorInverse.onclick = () => {
   strokeColorInverse.classList.add('active')
 }
 
-reset.onclick = () => {
-  reInit()
+/* Event handlers */
+
+function handleCountControl(event: Event) {
+  const element = event.currentTarget as HTMLInputElement
+  const newCount = Number(element.value)
+  if (newCount > particleCount) {
+    particles.push(new Particle())
+  }
+
+  if (newCount < particleCount) {
+    particles.splice(0, particleCount - newCount)
+  }
+
+  particleCount = newCount
 }
 
-randomizeButton.addEventListener('click', () => {
-  randomize()
-  reInit()
-})
+function handleSpeedControl(event: Event) {
+  const element = event.currentTarget as HTMLInputElement
+  const newSpeed = Number(element.value)
+  particleSpeed = newSpeed
+  updateParticleSpeeds(particles)
+}
 
+function updateParticleSpeeds(particles: Particle[]) {
+  particles.forEach(particle => {
+    const positiveX = particle.speedX >= 0
+    const positiveY = particle.speedY >= 0
+    particle.speedX = positiveX ? particleSpeed : -particleSpeed
+    particle.speedY = positiveY ? particleSpeed : -particleSpeed
+    particle.update()
+  })
+}
+
+function handleSizeControl(event: Event) {
+  const element = event.currentTarget as HTMLInputElement
+  sizeScale = Number(element.value)
+}
 
 class Particle {
   constructor(
     public x = Math.random() * canvas.width,
     public y = Math.random() * canvas.height,
-    public radius = Math.random() * particleSize,
     public speedX = Math.random() * particleSpeed,
-    public speedY = Math.random() * particleSpeed) {
+    public speedY = Math.random() * particleSpeed,
+    public radius = (Math.random() * particleSize) * sizeScale,
+    public particleSizeScale = sizeScale) {
   }
 
   draw() {
@@ -299,6 +292,14 @@ class Particle {
   }
 
   update() {
+    const sizeScaleChange = Number((sizeScale - this.particleSizeScale).toPrecision(2))
+
+    if (sizeScaleChange !== 0) {
+      const unscaled = Number((this.radius / this.particleSizeScale).toPrecision(2))
+      this.particleSizeScale = sizeScale
+      this.radius = unscaled * this.particleSizeScale
+    }
+
     this.x += this.speedX
     this.y += this.speedY
 
@@ -312,15 +313,6 @@ class Particle {
       this.speedY = -this.speedY
     }
     this.draw()
-  }
-
-  updateSize(change: number) {
-    let changedRadius = this.radius + change
-    if ((changedRadius > 0)) {
-      this.radius += change
-    } else {
-      this.radius = 1
-    }
   }
 }
 

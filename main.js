@@ -231,6 +231,9 @@ class Particle {
         this.shrinking = shrinking;
     }
     draw() {
+        if (this.radius <= 0) {
+            this.radius = 1;
+        }
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = determineColor(particleFill, hue, saturation, lightness);
@@ -239,6 +242,9 @@ class Particle {
         ctx.stroke();
     }
     update() {
+        if (this.radius <= 0) {
+            this.radius = 1;
+        }
         const sizeScaleChange = Number((sizeScale - this.particleSizeScale).toPrecision(2));
         if (sizeScaleChange !== 0) {
             const unscaled = Number((this.radius / this.particleSizeScale).toPrecision(2));
@@ -273,6 +279,7 @@ class Particle {
         if (jiggling) {
             this.x += (Math.random() - 0.5) * jigglage;
             this.y += (Math.random() - 0.5) * jigglage;
+            this.radius += (Math.random() - 0.5) * jigglage;
         }
         if (this.x + this.radius > canvas.width
             || this.x - this.radius < 0) {

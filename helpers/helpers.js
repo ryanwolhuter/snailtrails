@@ -32,4 +32,5 @@ export function determineColor(selection, hue, saturation, lightness, opacity = 
     if (selection === Colors.inverse) {
         return `hsl(${360 - hue}, ${100 - saturation}%, ${100 - lightness}%, ${opacity})`;
     }
+    return `hsl(0, 0%, 100%, 1)`;
 }

@@ -16,7 +16,12 @@ function scaleForRetina(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D
   ctx.scale(devicePixelRatio, devicePixelRatio)
 }
 
-export function scaleCanvases(canvases) {
+interface CanvasWithContext {
+  canvas: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D
+}
+
+export function scaleCanvases(canvases: CanvasWithContext[]) {
   canvases.forEach(({ canvas, ctx }) => {
     document.body.append(canvas)
     scaleForRetina(canvas, ctx)
@@ -41,4 +46,6 @@ export function determineColor(
   if (selection === Colors.inverse) {
     return `hsl(${360 - hue}, ${100 - saturation}%, ${100 - lightness}%, ${opacity})`
   }
+
+  return `hsl(0, 0%, 100%, 1)`
 }

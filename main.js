@@ -268,6 +268,10 @@ class Particle {
             this.speedX = unscaledSpeedX * this.particleSpeedScale;
             this.speedY = unscaledSpeedY * this.particleSpeedScale;
         }
+        if (jiggling) {
+            this.x += (Math.random() - 0.5) * jigglage;
+            this.y += (Math.random() - 0.5) * jigglage;
+        }
         if (this.x + this.radius > canvas.width
             || this.x - this.radius < 0) {
             this.speedX = -this.speedX;
@@ -278,10 +282,6 @@ class Particle {
         }
         this.x += this.speedX;
         this.y += this.speedY;
-        if (jiggling) {
-            this.x += (Math.random() - 0.5) * jigglage;
-            this.y += (Math.random() - 0.5) * jigglage;
-        }
         this.draw();
     }
 }

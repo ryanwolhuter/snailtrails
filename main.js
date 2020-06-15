@@ -279,9 +279,8 @@ class Particle {
         this.x += this.speedX;
         this.y += this.speedY;
         if (jiggling) {
-            const jiggle = (Math.random() - 0.5) * jigglage;
-            this.x += jiggle;
-            this.y += jiggle;
+            this.x += (Math.random() - 0.5) * jigglage;
+            this.y += (Math.random() - 0.5) * jigglage;
         }
         this.draw();
     }

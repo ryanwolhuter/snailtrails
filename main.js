@@ -39,14 +39,14 @@ particleCount, particleSpeed, speedScale, particleSize, sizeScale, particleFill,
 // color controls
 colorRate, hue, saturation, lightness, background, stroke } = state;
 function randomize() {
-    particleSize = Math.random() * 100;
-    particleSpeed = (Math.random() * 100) / (Math.random() * 100);
+    sizeScale = Math.ceil(Math.random() * 15);
+    speedScale = Math.ceil(Math.random() * 256);
     particles.forEach((particle) => {
         particle.x = Math.random() * canvas.width;
         particle.y = Math.random() * canvas.height;
-        particle.radius = Math.random() * particleSize;
-        particle.speedX = Math.random() * particleSpeed;
-        particle.speedY = Math.random() * particleSpeed;
+        particle.radius = Math.random() * particleSize * sizeScale;
+        particle.speedX = Math.random() * particleSpeed * speedScale;
+        particle.speedY = Math.random() * particleSpeed * speedScale;
     });
     const options = [
         Colors.light,

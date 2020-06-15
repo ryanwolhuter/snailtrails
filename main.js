@@ -273,4 +273,10 @@ function randomize() {
     saturation = Math.ceil(Math.random() * 100);
     lightness = Math.ceil(Math.random() * 100);
     colorRate = (Math.random() * 100) / (Math.random() * 100);
+    sizeControl.value = sizeScale.toString();
+    speedControl.value = speedScale.toString();
+    countControl.value = particleCount.toString();
+    colorRateControl.value = colorRate.toString();
+    saturationControl.value = saturation.toString();
+    lightnessControl.value = lightness.toString();
 }

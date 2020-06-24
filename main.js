@@ -328,6 +328,11 @@ function randomize() {
     sizeScale = Math.ceil(Math.random() * 15);
     speedScale = Math.ceil(Math.random() * 256);
     particleCount = Math.ceil(Math.random() * 50);
+    growshrink = Math.random() > 0.5;
+    shrinkage = Math.random();
+    growage = Math.random();
+    jiggling = Math.random() > 0.5;
+    jigglage = Math.random() * 4;
     reInit();
     particles.forEach((particle) => {
         particle.x = Math.random() * canvas.width;

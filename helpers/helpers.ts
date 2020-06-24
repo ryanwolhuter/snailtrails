@@ -5,6 +5,10 @@ export enum Colors {
   inverse
 }
 
+interface Scalar {
+  selected: number
+}
+
 // Scales a canvas with context to look better on retina
 function scaleForRetina(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
   ctx.scale(devicePixelRatio, devicePixelRatio)
@@ -48,4 +52,35 @@ export function determineColor(
   }
 
   return `hsl(0, 0%, 100%, 1)`
+}
+
+export function makeRangeInput(
+  control: Scalar,
+  name: string,
+  min: number,
+  max: number,
+  step = 1,
+  handler = (ev: Event) => {
+    const targetInput = ev.currentTarget as HTMLInputElement
+    control.selected = Number(targetInput.value)
+  }) {
+  const rangeInput = document.createElement('input')
+  const label = document.createElement('label')
+  const container = document.createElement('div')
+
+  rangeInput.type = 'range'
+  rangeInput.min = min.toString()
+  rangeInput.max = max.toString()
+  rangeInput.step = step.toString()
+  rangeInput.value = control.selected.toString()
+  rangeInput.oninput = handler
+
+  label.htmlFor = name
+  label.textContent = name
+
+  container.style.display = 'grid'
+
+  container.append(label, rangeInput)
+
+  return container
 }

@@ -1,4 +1,4 @@
-import { Colors, determineColor, scaleCanvases } from './helpers/helpers.js'
+import { Colors, determineColor, scaleCanvases, makeRangeInput } from './helpers/helpers.js'
 
 /* 
  * All the application state lives inside this object.

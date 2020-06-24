@@ -34,3 +34,22 @@ export function determineColor(selection, hue, saturation, lightness, opacity = 
     }
     return `hsl(0, 0%, 100%, 1)`;
 }
+export function makeRangeInput(control, name, min, max, step = 1, handler = (ev) => {
+    const targetInput = ev.currentTarget;
+    control.selected = Number(targetInput.value);
+}) {
+    const rangeInput = document.createElement('input');
+    const label = document.createElement('label');
+    const container = document.createElement('div');
+    rangeInput.type = 'range';
+    rangeInput.min = min.toString();
+    rangeInput.max = max.toString();
+    rangeInput.step = step.toString();
+    rangeInput.value = control.selected.toString();
+    rangeInput.oninput = handler;
+    label.htmlFor = name;
+    label.textContent = name;
+    container.style.display = 'grid';
+    container.append(label, rangeInput);
+    return container;
+}

@@ -50,19 +50,22 @@ button#close {
   cursor: pointer;
 }
 
-#show-controls {
+#show-controls, #randomize {
   display: grid;
   position: absolute;
   background: hsla(0, 0%, 40%, 0.4);
   backdrop-filter: blur(20px);
   color: white;
-  left: 0;
   top: 0;
   margin: 1rem;
   padding: 0.6rem;
   z-index: 2;
   border-radius: 1rem;
   cursor: pointer;
+}
+
+#randomize {
+  right: 0;
 }
 
 #show-controls:hover {
